@@ -78,7 +78,7 @@
     "lint": "npm run lint:js && npm run lint:dup && npm run lint:css",
     "lint-fix": "eslint --fix",
     "clean": "rm -rf dist",
-    "test": "npm run test:engine && npm run test:unit && npm run lint",
+    "test": "CI=true npm run test:engine && npm run test:unit && npm run lint",
     "test:engine": "check-engine",
     "test:sec": "npm audit || true",
     "test:unit": "cross-env NODE_ENV=test jest",
