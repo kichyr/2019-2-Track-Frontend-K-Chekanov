@@ -7,6 +7,7 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 const SRC_PATH = path.resolve(__dirname, 'src');
+const IMG_PATH = path.resolve(__dirname, 'src\components/\images');
 const BUILD_PATH = path.resolve(__dirname, 'build');
 
 module.exports = {
@@ -54,6 +55,17 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.(png|jpg)$/,
+                include: SRC_PATH,
+                use:[{
+                    loader: 'file-loader',
+                    options: {
+                        publicPath: '/'
+                    }
+                    }
+                ],
+            },
         ],
     },
     plugins: [
@@ -64,5 +76,8 @@ module.exports = {
             filename: 'index.html',
             template: './index.html'
         })
-    ]
+    ],
+    node: {
+        fs: 'empty'
+    }
 };
