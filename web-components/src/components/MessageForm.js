@@ -1,4 +1,5 @@
 import {Message, saveMess} from "./LocalStorage"
+
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
@@ -67,6 +68,7 @@ template.innerHTML = `
         
           
         .singleMess {
+            word-wrap: break-word;
             display:inline-block;
             clear: both;
             padding: 20px;
@@ -74,7 +76,6 @@ template.innerHTML = `
             margin-bottom: 2px;
             font-size: 3vh;
             max-width: 70%; 
-            margin-top: 10px;
             text-align:right;
         }
         
@@ -144,7 +145,7 @@ class MessageForm extends HTMLElement {
 
     loadOldMessages() {
         if(localStorage.getItem('messeges') == "")
-            return;
+            return
         var data = JSON.parse(localStorage.getItem('messeges'));
         for (let i = 0; i < data.length; i++) {
             this.displayMessage(data[i])
@@ -168,7 +169,6 @@ class MessageForm extends HTMLElement {
     dateTime() {
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var today = new Date();
         var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         return date + " " + time;
     }

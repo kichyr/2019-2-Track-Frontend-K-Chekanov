@@ -16,5 +16,5 @@ deploy:
   local_dir: web-components/build
   on:
     branch:
+      - hw2
       - master
-      - devel
