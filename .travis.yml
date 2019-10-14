@@ -12,9 +12,8 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $repo_token
+  github_token: d1b4ba4165502a3f8c42b272c3de5e6ce96275f1
   local_dir: web-components/build
   on:
     branch:
       - hw2
-      - master
