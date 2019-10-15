@@ -144,7 +144,7 @@ class MessageForm extends HTMLElement {
     }
 
     loadOldMessages() {
-        if(localStorage.getItem('messeges') == "")
+        if(localStorage.getItem('messeges') == null)
             return
         var data = JSON.parse(localStorage.getItem('messeges'));
         for (let i = 0; i < data.length; i++) {

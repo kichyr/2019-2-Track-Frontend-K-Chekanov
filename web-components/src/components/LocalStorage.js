@@ -14,7 +14,7 @@ export class Message{
 }
 export function saveMess(message) {
     let data
-    if(localStorage.getItem('messeges') == "") {
+    if(localStorage.getItem('messeges') == null) {
         localStorage.setItem("messeges", "[]")
         data = {}
     }
