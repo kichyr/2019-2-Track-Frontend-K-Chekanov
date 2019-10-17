@@ -1,5 +1,3 @@
-import {Message, saveMess} from "./LocalStorage"
-
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
