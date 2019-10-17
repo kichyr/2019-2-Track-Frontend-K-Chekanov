@@ -16,7 +16,7 @@ export function saveMess(message) {
     let data
     if(localStorage.getItem('messeges') == null) {
         localStorage.setItem("messeges", "[]")
-        data = {}
+        data = []
     }
     data = JSON.parse(localStorage.getItem('messeges'))
     data.push(message)

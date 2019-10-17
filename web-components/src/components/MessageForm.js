@@ -65,56 +65,6 @@ template.innerHTML = `
         input[type=submit] {
             visibility: collapse;
         }
-        
-          
-        .singleMess {
-            word-wrap: break-word;
-            display:inline-block;
-            clear: both;
-            padding: 20px;
-            border-radius: 30px;
-            margin-bottom: 2px;
-            font-size: 3vh;
-            max-width: 70%; 
-            text-align:right;
-        }
-        
-        [sender = him]{
-        background: #eee;
-        float: left;
-        }
-        
-        [sender = me]{
-        float: right;
-        background: #0084ff;
-        color: #fff;
-        }
-        
-    [sender]{
-        border-bottom-right-radius: 5px;
-    }
-        
-    [sender = me]{
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-    }
-        
-    [sender = him]:last-of-type {
-        border-bottom-right-radius: 30px;
-    }
-
-    .dateTime {
-        font-size: 2vh;
-        margin: 0;
-        align: right;
-    }
-    [sender = me] .dateTime {
-        color: LightGray;
-    }
-    [sender = him] .dateTime {
-        color: Gray;
-    }
-        
     </style>
     <form>
         <top-line></top-line>
@@ -185,17 +135,8 @@ class MessageForm extends HTMLElement {
     }
 
     displayMessage(message) {
-        var mess = document.createElement('div');
-        mess.setAttribute("class", "singleMess");
-        var dateTime = document.createElement('p');
-        dateTime.setAttribute("class", "dateTime");
-        dateTime.innerHTML = message.time;
-        if(message.sender == WHOAMI)
-            mess.setAttribute("sender", "me");
-        else
-            mess.setAttribute("sender", "him");
-        mess.innerHTML = message.messageText;
-        mess.appendChild(dateTime);
+        var mess = document.createElement('single-mess');
+        mess.init(message, WHOAMI);
         this.$messages.appendChild(mess);
     }
 }
