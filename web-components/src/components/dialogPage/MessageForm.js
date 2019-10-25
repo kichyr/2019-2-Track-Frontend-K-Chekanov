@@ -17,6 +17,8 @@ template.innerHTML = `
 
         textarea {
             flex: 8;
+            color: transparent;
+            text-shadow: 0px 0px 0px #000000;
             font-size: 3vh;
             border-radius: 20px;
             overflow:hidden;
@@ -90,7 +92,7 @@ class MessageForm extends HTMLElement {
         this.loadOldMessages();
 
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
-        this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
+        //this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
     }
 
     loadOldMessages() {
@@ -104,6 +106,8 @@ class MessageForm extends HTMLElement {
 
     _onSubmit (event) {
         event.preventDefault();
+        if(this.$input.value == "")
+            return;
         var message = new Message(this.$input.value, WHOAMI);
         saveMess(message);
         this.displayMessage(message);

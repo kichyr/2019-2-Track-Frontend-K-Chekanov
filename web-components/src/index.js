@@ -1,6 +1,6 @@
 import './index.css';
 
-import './components/SingleMess';
-import './components/FormInput';
-import './components/TopLine';
-import './components/MessageForm';
+import './components/dialogPage/SingleMess';
+import './components/dialogPage/FormInput';
+import './components/dialogPage/TopLine';
+import './components/dialogPage/MessageForm';
