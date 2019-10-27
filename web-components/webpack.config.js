@@ -5,6 +5,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const SRC_PATH = path.resolve(__dirname, 'src');
 const IMG_PATH = path.resolve(__dirname, 'src/components/images');
@@ -69,6 +70,9 @@ module.exports = {
         ],
     },
     plugins: [
+        new CopyPlugin([
+            { from: '/images/*', to: 'res/images', toType: 'dir',},
+          ]),
         new MiniCSSExtractPlugin({
             filename: 'style.css',
         }),

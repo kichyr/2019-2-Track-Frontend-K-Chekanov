@@ -26,3 +26,12 @@ message-form {
     margin: 0;
     flex: 1;
 }
+
+dialogslist-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    display: none;
+    flex: 1;
+}

@@ -6,6 +6,8 @@ template.innerHTML = `
         font-size: 3vh;
         background-color: #0084ff;
         height: 100%;
+        align-items: center;
+        justify-content: flex-end;
     }
     img {
         flex: 1;
@@ -23,13 +25,12 @@ template.innerHTML = `
 </style>
 
 <div class="container">
-<div class=name>Ivanov Ivan</div>
-<img src="test_img.png" alt="Avatar">
+<search-bar></search-bar>
 </div>
 `
 ;
 
-class TopLine extends HTMLElement{
+class TopLineDialogsList extends HTMLElement{
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -39,4 +40,4 @@ class TopLine extends HTMLElement{
     }
 }
 
-customElements.define('top-line', TopLine);
+customElements.define('dialog_list_top-line', TopLineDialogsList);

@@ -5,7 +5,9 @@ template.innerHTML = `
     <style>
         top-line {
             flex: 1.5;
+
         }
+        
         .input_panel {
             background: #eee;
             flex: 1;
@@ -53,7 +55,7 @@ template.innerHTML = `
         ::-webkit-scrollbar-track {
             border: 1px solid blue;
             border-radius: 10px;
-            }
+        }
             
         ::-webkit-scrollbar-thumb {
             background: blue;
@@ -90,7 +92,7 @@ class MessageForm extends HTMLElement {
         this.$input = this._shadowRoot.querySelector('textarea');
         this.$messages = this._shadowRoot.querySelector('.result');
         this.loadOldMessages();
-
+        this.scrollToBot();
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         //this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
     }
