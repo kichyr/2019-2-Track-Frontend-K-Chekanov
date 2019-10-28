@@ -43,7 +43,6 @@ class CreateNewDialogForm extends HTMLElement{
 		this.$surname = this._shadowRoot.querySelector('.surname');
 		this.$btn = this._shadowRoot.querySelector('button');
 		this.$btn.addEventListener("click", function () {
-			console.log(this.$login.value);
             createNewChat(this.$login.value, this.$name.value, this.$surname.value);
         }.bind(this));
         /* this.$container = this._shadowRoot.querySelector('.container');
