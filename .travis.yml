@@ -17,3 +17,5 @@ deploy:
   on:
     branch:
       - gh-pages
+      - hw3
+      - master

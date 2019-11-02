@@ -44,6 +44,8 @@ class CreateNewDialogForm extends HTMLElement{
 		this.$btn = this._shadowRoot.querySelector('button');
 		this.$btn.addEventListener("click", function () {
             createNewChat(this.$login.value, this.$name.value, this.$surname.value);
+            document.body.getElementsByTagName('dialogslist-form')[0].drawExistingDialogs();
+            this.style.display = 'none';
         }.bind(this));
         /* this.$container = this._shadowRoot.querySelector('.container');
         this.$img = this._shadowRoot.querySelector('img');

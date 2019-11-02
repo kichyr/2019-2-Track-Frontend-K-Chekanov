@@ -109,6 +109,9 @@ adder-new-dialog-button {
     border-radius: 2vh;
     font-size: 3vh;
 }
+.wrap:hover, .wrap:active {
+    background-color: #c0c0c0;
+}
 .meta {
     flex:10;
 }
@@ -116,6 +119,7 @@ adder-new-dialog-button {
 .addinfo {
     flex: 1;
     width: 5 vh;
+    display: flex;
 }
 img {
     margin: 3vh;
@@ -126,7 +130,7 @@ img {
 }
 .preview {
     color: blue;
-    width: 750px;
+    width: 420px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -134,10 +138,22 @@ img {
     margin: 1vh;
 }
 .name {
-    font: inherit;
     font-weight: bold;
     margin: 1vh;
 }
+
+p{
+    font-size: 3vh;
+    margin: 5px;
+}
+.dot {
+    margin-top: 7px;
+    height: 3vh;
+    width: 3vh;
+    background-color: #92C1F0;
+    border-radius: 50%;
+    display: inline-block;
+  }
 </style>
 
 <div class="container">
@@ -157,7 +173,8 @@ img {
                 hdbhasbdhbasbdhbashbdbasdbhasbdbasbdhbsabdhbsaing that we could have chicken tonight, sounds good?</div>
             </div>
             <div class="addinfo">
-            asdasfasd
+                <span class="dot"></span>
+                <p>21:23</p>
             </div>
 
         </div>
@@ -195,25 +212,36 @@ class DialogsListForm extends HTMLElement{
 
     drawExistingDialogs() {
         var dlist = getDialogsList();
+        if (dlist == null)
+            return;
         Object.keys(dlist).forEach(function(e){
             var name = dlist[e].name;
             var surname = dlist[e].surname;
-            var last_message = dlist[e].lastmessage;
+            var last_message = dlist[e].lastmessage.messageText;
             var login = e;
             var chatPattern = `
-                    <div class="wrap">
+                <div class="wrap">
                     <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
                     <div class="meta">
-                        <div class="name">${name} ${surname}<div>
+                        <div class="name">${name} ${surname}</div>
                         <div class="preview">${last_message}</div>
                     </div>
-                    <div class="addinfo">
+                        <div class="addinfo">
+                        <span class="dot"></span>
+                        <p>21:23</p>
                     </div>
+                </div>
             `;
             var child = document.createElement('div');
             child.setAttribute("class", "chatwrap");
             child.setAttribute("login", login);
             child.innerHTML = chatPattern;
+            child.addEventListener("click", function () {
+                var $messageForm = document.body.getElementsByTagName('message-form')[0];
+                $messageForm.loadOldMessages(login);
+                $messageForm.style.display = 'block';
+                document.body.getElementsByTagName('dialogslist-form')[0].style.display = 'none';
+            });
             this.$dialogsListContainer.appendChild(child);
         }.bind(this));
     }

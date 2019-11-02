@@ -91,16 +91,20 @@ class MessageForm extends HTMLElement {
         this.$form = this._shadowRoot.querySelector('form');
         this.$input = this._shadowRoot.querySelector('textarea');
         this.$messages = this._shadowRoot.querySelector('.result');
-        this.loadOldMessages();
         this.scrollToBot();
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         //this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
+        console.log(localStorage.getItem('messages'));
     }
 
-    loadOldMessages() {
-        if(localStorage.getItem('messeges') == null)
+    loadOldMessages(login) {
+        this.$messages.innerHTML = '';
+        this.login = login;
+        if(localStorage.getItem('messages') == null)
             return
-        var data = JSON.parse(localStorage.getItem('messeges'));
+        var data = JSON.parse(localStorage.getItem('messages'));
+        console.log("kek");
+        data = data[login];
         for (let i = 0; i < data.length; i++) {
             this.displayMessage(data[i])
         }
@@ -111,11 +115,11 @@ class MessageForm extends HTMLElement {
         if(this.$input.value == "")
             return;
         var message = new Message(this.$input.value, WHOAMI);
-        saveMess(message);
+        saveMess(message, this.login);
         this.displayMessage(message);
         //---------------TO_FIX-----------------
         var message_bot = new Message("Hi, fix me later pls)", this.interlocutorName);
-        saveMess(message_bot);
+        saveMess(message_bot, this.login);
         this.displayMessage(message_bot);
         // -------------------------------------
         this.scrollToBot();

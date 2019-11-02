@@ -22,9 +22,30 @@ template.innerHTML = `
         flex: 1;
         text-align:right;
     }
+    .burgerButtContainer  {
+        flex: 0.15;
+        margin: auto;
+    }
+    .burgerButtContainer > div > div{
+        width: 40px;
+        height: 7px;
+        background-color: white;
+        margin: 6px 30px;
+        border-radius: 10%;
+    }
+    search-bar {
+        flex: 3;
+    }
 </style>
 
 <div class="container">
+<div class="burgerButtContainer">
+    <div class="burgerButt">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 <search-bar></search-bar>
 </div>
 `
