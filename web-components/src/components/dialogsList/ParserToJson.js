@@ -20,7 +20,6 @@ export function createNewChat(login, Name, Surname) {
     }
     data[login] = [];
     localStorage.setItem('messages', JSON.stringify(data));
-    console.log(localStorage.getItem('messages'));
 }
 
 export function getDialogsList() {

@@ -94,7 +94,6 @@ class MessageForm extends HTMLElement {
         this.scrollToBot();
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         //this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
-        console.log(localStorage.getItem('messages'));
     }
 
     loadOldMessages(login) {
@@ -103,7 +102,6 @@ class MessageForm extends HTMLElement {
         if(localStorage.getItem('messages') == null)
             return
         var data = JSON.parse(localStorage.getItem('messages'));
-        console.log("kek");
         data = data[login];
         for (let i = 0; i < data.length; i++) {
             this.displayMessage(data[i])
