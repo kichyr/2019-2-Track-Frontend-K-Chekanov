@@ -82,7 +82,26 @@ dialog_list_top-line {
 
 .dialogsListContainer {
     flex: 15;
+    overflow-y:auto;
 }
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+    
+::-webkit-scrollbar-track {
+    border: 1px solid blue;
+    border-radius: 10px;
+}
+    
+::-webkit-scrollbar-thumb {
+    background: blue;
+    border-radius: 10px;
+    }
+    
+::-webkit-scrollbar-thumb:hover {
+    background: #88ba1c;  
+    }
 
 adder-new-dialog-button {
     position: fixed;
@@ -96,7 +115,7 @@ adder-new-dialog-button {
     display: flex;
     width: 100%;
     justify-content: center;
-    height: 15%;
+    height: 17vh;
     align-items: center;
 }
 .wrap {
@@ -212,6 +231,7 @@ class DialogsListForm extends HTMLElement{
     }
 
     drawExistingDialogs() {
+        this.clearDialogs();
         var dlist = getDialogsList();
         if (dlist == null)
             return;
@@ -276,6 +296,12 @@ class DialogsListForm extends HTMLElement{
     closeModal() {
         this.$modal.style.display = "none";
     }
+
+    clearDialogs () {
+        var chats = this._shadowRoot.querySelectorAll('.chatwrap');
+        for (var i = 0; i < chats.length; i++)
+            chats[i].parentNode.removeChild(chats[i]);
+        }
 }
 
 customElements.define('dialogslist-form', DialogsListForm);
