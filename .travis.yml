@@ -16,6 +16,8 @@ deploy:
   local_dir: web-components/build
   on:
     branch:
-      - gh-pages
+      - master
+      - devel
+      - hw3
       - hw3
       - master
