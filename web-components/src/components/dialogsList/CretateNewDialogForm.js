@@ -28,7 +28,7 @@ button {
   <input class="name" type="text" name="name" id="password" placeholder="Name">
   <input class="surname" type="text" name="name" id="password" placeholder="Surname">
 
-  <button><span>Sign up</span></button>
+  <button><span>Create new chat</span></button>
 </div>
 `
 ;
@@ -45,7 +45,6 @@ class CreateNewDialogForm extends HTMLElement{
 		this.$btn.addEventListener("click", function () {
             createNewChat(this.$login.value, this.$name.value, this.$surname.value);
             document.body.getElementsByTagName('dialogslist-form')[0].drawExistingDialogs();
-            this.style.display = 'none';
         }.bind(this));
         /* this.$container = this._shadowRoot.querySelector('.container');
         this.$img = this._shadowRoot.querySelector('img');

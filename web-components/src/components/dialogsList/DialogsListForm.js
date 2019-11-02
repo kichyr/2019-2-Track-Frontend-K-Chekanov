@@ -206,6 +206,7 @@ class DialogsListForm extends HTMLElement{
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$container = this._shadowRoot.querySelector('.container');
         this.$dialogsListContainer = this._shadowRoot.querySelector('.dialogsListContainer');
+        this.$modal = this._shadowRoot.querySelector('.modal');
         this.configureModal();
         this.drawExistingDialogs();
     }
@@ -243,34 +244,37 @@ class DialogsListForm extends HTMLElement{
                 document.body.getElementsByTagName('dialogslist-form')[0].style.display = 'none';
             });
             this.$dialogsListContainer.appendChild(child);
+            this.closeModal();
         }.bind(this));
     }
 
     configureModal() {
-        // Get the modal
-        var modal = this._shadowRoot.querySelector('.modal');
     
         // Get the button that opens the modal
         var btn = this._shadowRoot.querySelector('.plusbut');
     
         // Get the <span> element that closes the modal
-        var span = this._shadowRoot.querySelector('span');
+        var span = this._shadowRoot.querySelector('.close');
     
         // When the user clicks the button, open the modal
         btn.addEventListener("click", function () {
-            modal.style.display = "block";
-        });
+            this.$modal.style.display = "block";
+        }.bind(this));
     
         span.addEventListener("click", function () {
-            modal.style.display = "none";
-        });
+            this.closeModal();
+        }.bind(this));
     
         // When the user clicks anywhere outside of the modal, close it
-        modal.addEventListener("click",  function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        this.$modal.addEventListener("click",  function(event) {
+        if (event.target == this.$modal) {
+            this.closeModal();
         }
-        });
+        }.bind(this));
+    }
+
+    closeModal() {
+        this.$modal.style.display = "none";
     }
 }
 
