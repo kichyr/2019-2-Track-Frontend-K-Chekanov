@@ -44,7 +44,7 @@ template.innerHTML = `
 }
 
 .plusbut {
-    position: fixed;
+    position: absolute;
     right: 3vh;
     bottom: 3vh;
     border-radius: 50%;
@@ -77,7 +77,7 @@ template.innerHTML = `
 }
 
 dialog_list_top-line {
-    flex: 1.5;
+    height: 10vh;
 }
 
 .dialogsListContainer {
@@ -260,8 +260,8 @@ class DialogsListForm extends HTMLElement{
             child.addEventListener("click", function () {
                 var $messageForm = document.body.getElementsByTagName('message-form')[0];
                 $messageForm.loadOldMessages(login);
-                $messageForm.style.display = 'block';
-                document.body.getElementsByTagName('dialogslist-form')[0].style.display = 'none';
+                $messageForm.style.left = '0%';
+                document.body.getElementsByTagName('dialogslist-form')[0].style.left = '-100%';
             });
             this.$dialogsListContainer.appendChild(child);
             this.closeModal();

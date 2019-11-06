@@ -4,8 +4,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
         top-line {
-            flex: 1.5;
-
+            height: 10vh;            
         }
         
         .input_panel {

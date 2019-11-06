@@ -15,14 +15,16 @@ template.innerHTML = `
 
         .singleMess {
             word-wrap: break-word;
-            display:inline-block;
+            display: inline-block;
             clear: both;
             padding: 20px;
             border-radius: 30px;
             margin-bottom: 2px;
-            font-size: 3vh;
-            max-width: 70%; 
+            font-size: 3vh; 
             text-align:right;
+            animation: msg;
+            animation-duration: 3s;
+            max-width: 70%;
         }
         [sender = him]{
             background: #eee;
@@ -43,10 +45,19 @@ template.innerHTML = `
         [sender = him]:last-of-type {
             border-bottom-right-radius: 30px;
         }
+
+        @keyframes msg {
+            0% {
+                opacity: .0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    
     </style>
     <div class="singleMess">
         <div class="singleMessText">
-            kek
         </div>
         <p class="dateTime">
         </p>

@@ -57,8 +57,8 @@ class TopLine extends HTMLElement{
         this.$img = this._shadowRoot.querySelector('img');
         this.$burgerButton = this._shadowRoot.querySelector('.burgerButtContainer');
         this.$burgerButton.addEventListener("click", function () {
-            document.body.getElementsByTagName('message-form')[0].style.display = 'none';
-            document.body.getElementsByTagName('dialogslist-form')[0].style.display = 'block';
+            document.body.getElementsByTagName('message-form')[0].style.left = '100%';
+            document.body.getElementsByTagName('dialogslist-form')[0].style.left = '0%';
         });
     }
 }

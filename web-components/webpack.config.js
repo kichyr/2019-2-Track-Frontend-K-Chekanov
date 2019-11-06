@@ -56,22 +56,11 @@ module.exports = {
                     },
                 ],
             },
-            {
-                /* test: /\.(png|jpg)$/,
-                include: IMG_PATH,
-                use:[{
-                    loader: 'file-loader',
-                    options: {
-                        publicPath: '/src'
-                    }
-                    }
-                ], */
-            },
         ],
     },
     plugins: [
         new CopyPlugin([
-            { from: '/images/*', to: 'res/images', toType: 'dir',},
+            { from: '/src/images/*', to: '/', toType: 'dir',},
           ]),
         new MiniCSSExtractPlugin({
             filename: 'style.css',
