@@ -17,6 +17,7 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 message-form {
@@ -41,4 +42,5 @@ dialogslist-form {
     margin: 0;
     flex: 1;
     transition-duration: 0.5s;
+    animation: translating 4s linear infinite;
 }

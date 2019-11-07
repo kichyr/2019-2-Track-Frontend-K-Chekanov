@@ -60,7 +60,7 @@ module.exports = {
     },
     plugins: [
         new CopyPlugin([
-            { from: '/src/images/*', to: '/', toType: 'dir',},
+            { from: 'images', to: 'images', toType: 'dir',},
           ]),
         new MiniCSSExtractPlugin({
             filename: 'style.css',
