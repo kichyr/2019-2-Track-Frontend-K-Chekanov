@@ -43,7 +43,7 @@ template.innerHTML = `
     </div>
 </div>
 <div class=name>Ivanov Ivan</div>
-<img src="src/images/test_img.png" alt="Avatar">
+<img  src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar">
 </div>
 `
 ;
