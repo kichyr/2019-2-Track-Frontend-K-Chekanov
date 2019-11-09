@@ -1,6 +1,18 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
+    .burgerButtContainer  {
+        flex: 0.15;
+        margin: auto;
+    }
+    .burgerButtContainer > div > div{
+        width: 40px;
+        height: 7px;
+        background-color: white;
+        margin: 6px 30px;
+        border-radius: 10%;
+    }
+
     .container {
         display: flex;
         font-size: 3vh;
@@ -23,8 +35,15 @@ template.innerHTML = `
 </style>
 
 <div class="container">
+<div class="burgerButtContainer">
+    <div class="burgerButt">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 <div class=name>Ivanov Ivan</div>
-<img src="src/images/test_img.png" alt="Avatar">
+<img  src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar">
 </div>
 `
 ;
@@ -36,6 +55,11 @@ class TopLine extends HTMLElement{
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$container = this._shadowRoot.querySelector('.container');
         this.$img = this._shadowRoot.querySelector('img');
+        this.$burgerButton = this._shadowRoot.querySelector('.burgerButtContainer');
+        this.$burgerButton.addEventListener("click", function () {
+            document.body.getElementsByTagName('message-form')[0].style.left = '100%';
+            document.body.getElementsByTagName('dialogslist-form')[0].style.left = '0%';
+        });
     }
 }
 

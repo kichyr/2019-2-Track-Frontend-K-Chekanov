@@ -7,18 +7,18 @@ function getTime() {
 
 export class Message{
     constructor(messageText, sender) {
-        this.messageText = messageText
-        this.sender = sender
-        this.time = getTime()
+        this.messageText = messageText;
+        this.sender = sender;
+        this.time = getTime();
     }
 }
-export function saveMess(message) {
-    let data
-    if(localStorage.getItem('messeges') == null) {
-        localStorage.setItem("messeges", "[]")
-        data = []
+export function saveMess(message, login) {
+    let data = JSON.parse(localStorage.getItem('messages'));
+    if(data[login] == null) {
+        data[login] = [];
     }
-    data = JSON.parse(localStorage.getItem('messeges'))
-    data.push(message)
-    localStorage.setItem('messeges', JSON.stringify(data))
+    data[login].push(message);
+    localStorage.setItem('messages', JSON.stringify(data));
+    data = JSON.parse(localStorage.getItem('DialogList'));
+    data[login].lastmessage = message;
 }

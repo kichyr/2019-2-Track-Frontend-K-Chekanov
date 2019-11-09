@@ -6,6 +6,8 @@ template.innerHTML = `
         font-size: 3vh;
         background-color: #0084ff;
         height: 100%;
+        align-items: center;
+        justify-content: flex-end;
     }
     img {
         flex: 1;
@@ -20,16 +22,36 @@ template.innerHTML = `
         flex: 1;
         text-align:right;
     }
+    .burgerButtContainer  {
+        flex: 0.15;
+        margin: auto;
+    }
+    .burgerButtContainer > div > div{
+        width: 40px;
+        height: 7px;
+        background-color: white;
+        margin: 6px 30px;
+        border-radius: 10%;
+    }
+    search-bar {
+        flex: 3;
+    }
 </style>
 
 <div class="container">
-<div class=name>Ivanov Ivan</div>
-<img src="test_img.png" alt="Avatar">
+<div class="burgerButtContainer">
+    <div class="burgerButt">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<search-bar></search-bar>
 </div>
 `
 ;
 
-class TopLine extends HTMLElement{
+class TopLineDialogsList extends HTMLElement{
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -39,4 +61,4 @@ class TopLine extends HTMLElement{
     }
 }
 
-customElements.define('top-line', TopLine);
+customElements.define('dialog_list_top-line', TopLineDialogsList);

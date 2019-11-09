@@ -5,6 +5,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const SRC_PATH = path.resolve(__dirname, 'src');
 const IMG_PATH = path.resolve(__dirname, 'src/components/images');
@@ -55,20 +56,12 @@ module.exports = {
                     },
                 ],
             },
-            {
-                /* test: /\.(png|jpg)$/,
-                include: IMG_PATH,
-                use:[{
-                    loader: 'file-loader',
-                    options: {
-                        publicPath: '/src'
-                    }
-                    }
-                ], */
-            },
         ],
     },
     plugins: [
+        new CopyPlugin([
+            { from: 'images', to: 'images', toType: 'dir',},
+          ]),
         new MiniCSSExtractPlugin({
             filename: 'style.css',
         }),
