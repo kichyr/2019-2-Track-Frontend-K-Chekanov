@@ -133,6 +133,7 @@ adder-new-dialog-button {
 }
 .meta {
     flex:10;
+    min-width: 0;
 }
 
 .addinfo {
@@ -149,7 +150,6 @@ img {
 }
 .preview {
     color: blue;
-    width: 420px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
