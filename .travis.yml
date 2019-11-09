@@ -17,4 +17,4 @@ deploy:
   on:
     branch:
       - master
-      - hw3
+      - hw4

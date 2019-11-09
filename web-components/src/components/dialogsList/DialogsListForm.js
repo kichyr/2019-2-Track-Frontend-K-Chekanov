@@ -50,9 +50,16 @@ template.innerHTML = `
     border-radius: 50%;
     width: 8vh;
     height: 8vh;
-
     background-color: #0084ff;
+    transition: all 0.3s;
   }
+.plusbut:hover, .plusbut:active{
+    background-color: #1231FB;
+    width: 10vh;
+    height: 10vh;
+    right: 2vh;
+    bottom: 2vh;
+}
   
   .horizontal-plus {
     position: relative;
@@ -130,6 +137,7 @@ adder-new-dialog-button {
 }
 .wrap:hover, .wrap:active {
     background-color: #c0c0c0;
+    transition: background-color 0.2s;
 }
 .meta {
     flex:10;

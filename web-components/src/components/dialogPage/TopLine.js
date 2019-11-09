@@ -1,10 +1,18 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
-    .burgerButtContainer  {
-        flex: 0.15;
-        margin: auto;
-    }
+.burgerButtContainer  {
+    flex: 0.12;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+.burgerButtContainer:hover, .burgerButtContainer:active {
+    background-color: #1231FB;
+}
     .burgerButtContainer > div > div{
         width: 40px;
         height: 7px;

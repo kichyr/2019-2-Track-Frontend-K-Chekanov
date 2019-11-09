@@ -103,7 +103,9 @@ class MessageForm extends HTMLElement {
         var data = JSON.parse(localStorage.getItem('messages'));
         data = data[login];
         for (let i = 0; i < data.length; i++) {
-            this.displayMessage(data[i])
+            var mess = document.createElement('single-mess');
+            mess.init(data[i], WHOAMI);
+            this.$messages.appendChild(mess);
         }
     }
 
@@ -144,6 +146,7 @@ class MessageForm extends HTMLElement {
     displayMessage(message) {
         var mess = document.createElement('single-mess');
         mess.init(message, WHOAMI);
+        mess.setAnimation()
         this.$messages.appendChild(mess);
     }
 }

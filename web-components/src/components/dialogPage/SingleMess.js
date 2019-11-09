@@ -22,8 +22,6 @@ template.innerHTML = `
             margin-bottom: 2px;
             font-size: 3vh; 
             text-align:right;
-            animation: msg;
-            animation-duration: 3s;
             max-width: 70%;
         }
         [sender = him]{
@@ -46,12 +44,16 @@ template.innerHTML = `
             border-bottom-right-radius: 30px;
         }
 
+        [animation = "newMessage"] {
+            animation: msg;
+            animation-duration: 0.3s;
+        }
         @keyframes msg {
             0% {
-                transform: translateY(0);
+                transform: scale(0);
             }
             100% {
-                transform: translateY(1);
+                transform: scale(1);
             }
         }
     
@@ -81,6 +83,9 @@ class SingleMess extends HTMLElement {
             this.$singleMessBlock.setAttribute("sender", "me");
         else
             this.$singleMessBlock.setAttribute("sender", "him");
+    }
+    setAnimation() {
+        this.$singleMessBlock.setAttribute("animation", "newMessage");
     }
 }
 

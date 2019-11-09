@@ -23,9 +23,17 @@ template.innerHTML = `
         text-align:right;
     }
     .burgerButtContainer  {
-        flex: 0.15;
-        margin: auto;
+        justify-content: center;
+        flex: 0.32;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
     }
+    .burgerButtContainer:hover, .burgerButtContainer:active {
+        background-color: #1231FB;
+    }
+
     .burgerButtContainer > div > div{
         width: 40px;
         height: 7px;
