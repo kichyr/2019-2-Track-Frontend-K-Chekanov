@@ -1,0 +1,21 @@
+
+.burgerButt  {
+    justify-content: center;
+    flex: 0.32;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transition: background-color 0.2s;
+}
+.burgerButt:hover, .burgerButtContainer:active {
+    background-color: #1231FB;
+}
+
+.burgerButt > div{
+    width: 3em;
+    height: 0.6em;
+    background-color: white;
+    margin: 0.1em 3em;
+    border-radius: 10%;
+}

@@ -1,0 +1,26 @@
+export function createNewChat(login, Name, Surname) {
+	let data;
+	if(localStorage.getItem('DialogList') == null) {
+		localStorage.setItem('DialogList', '{}')
+		data = {};
+	}
+	else {
+		data = JSON.parse(localStorage.getItem('DialogList'));
+	}
+	data[login] = {name: Name, surname: Surname, lastmessage: ''};
+	localStorage.setItem('DialogList', JSON.stringify(data))
+
+	if(localStorage.getItem('messages') == null) {
+		localStorage.setItem('messages', '{}')
+		data = {};
+	}
+	else {
+		data = JSON.parse(localStorage.getItem('messages'));
+	}
+	data[login] = [];
+	localStorage.setItem('messages', JSON.stringify(data));
+}
+
+export function getDialogsList() {
+	return JSON.parse(localStorage.getItem('DialogList'));
+}
