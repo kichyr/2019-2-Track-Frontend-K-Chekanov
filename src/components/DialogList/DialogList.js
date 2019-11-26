@@ -5,7 +5,6 @@ import CreateNewChat from '../CreateNewChat/CreateNewChat';
 
 
 function getDialogsList() {
-	console.log(localStorage.getItem('DialogList'));
 	const data = JSON.parse(localStorage.getItem('DialogList'));
 	return data;
 }
@@ -13,36 +12,29 @@ function getDialogsList() {
 
 
 const generateList = (chats) => {
-	let index = 0;
-	const chatList = [];
-	let chat = null;
-	for(chat in chats){
-		if (chats.hasOwnProperty(chat)){
-			chatList.push(
-				<div className={styles.chatwrap} key={index.toString()}>
-					<div className={styles.wrap}>
-						<img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
-						<div className={styles.meta}>
-							<div className="name">{`${chats[chat].name} ${chats[chat].surname}`} </div>
-							<div className="preview">{chats[chat].lastmessage} </div>
-							<div className={styles.addinfo}>
-								<span className={styles.dot} />
-								<p>21:23</p>
-							</div>
-						</div>
+	return chats.map(
+		(chat, index) => (
+			<div className={styles.chatwrap} key={index.toString()}>
+				<div className={styles.wrap} id={chat.chat_id}>
+					<img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
+					<div className={styles.meta}>
+						<div className={styles.topic}>{`${chat.topic}`} </div>
+						<div className={styles.preview}>{chat.lastmessage} </div>
+					</div>
+					<div className={styles.addinfo}>
+						<span className={styles.dot} />
+						<p>21:23</p>
 					</div>
 				</div>
-			);
-			index += 1;
-		}
-	}
-	return chatList;
+			</div>
+		)
+	);
 };
 
 function DialogListImpl({chats}) {
 	return (
 		<div className={styles.dialogsListContainer}>
-			{chats !== undefined && generateList(chats)}
+			{chats !== null && generateList(chats)}
 		</div>
 	);
 }

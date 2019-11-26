@@ -1,33 +1,31 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState }  from 'react';
 import * as plusButtonStyles from './plusButtonStyles.module.css';
 import * as CNDialogFormStyles from './createNewChatForm.module.css';
 
 
 // create new Chat in local storage and return created chat
-function createNewChat(login, Name, Surname) {
+function createNewChat(Topic) {
 	let data;
 	if(localStorage.getItem('DialogList') == null) {
-		localStorage.setItem('DialogList', '{}')
-		data = {};
+		localStorage.setItem('DialogList', '[]');
+		data = [];
 	}
 	else {
 		data = JSON.parse(localStorage.getItem('DialogList'));
 	}
-	data[login] = {name: Name, surname: Surname, lastmessage: ''};
-	localStorage.setItem('DialogList', JSON.stringify(data))
-
+	data.push({'chat_id': data.length, 'topic': Topic, 'lastmessage': ''});
+	localStorage.setItem('DialogList', JSON.stringify(data));
 	let mdata;
 	if(localStorage.getItem('messages') == null) {
-		localStorage.setItem('messages', '{}')
+		localStorage.setItem('messages', '{}');
 		mdata = {};
 	}
 	else {
 		mdata = JSON.parse(localStorage.getItem('messages'));
 	}
-	mdata[login] = [];
-	localStorage.setItem('messages', JSON.stringify(data));
-	return [login, data[login]];
+	mdata[data.size] = [];
+	localStorage.setItem('messages', JSON.stringify(mdata));
+	return data[data.length - 1];
 }
 
 function PlusButton({setHiding}) {
@@ -44,22 +42,17 @@ function PlusButton({setHiding}) {
 }
 
 function CreateNewDialogForm({isHide, setHiding, setChats, chats}) {
-	let loginForm = null;
-	let nameForm = null;
-	let surnameForm = null;
+	let topicForm = null;
 	const createChatButt = (e)=>{
 		e.preventDefault();
 		setChats((()=>{
-			const newChats =  { ...chats };
-			const [login, userData] = createNewChat(
-				loginForm.value,
-				nameForm.value,
-				surnameForm.value
+			const newChat = createNewChat(
+				topicForm.value
 			);
-			newChats[login] = userData;
-			console.log(newChats);
+			const newChats =  [...chats, newChat];
 			return newChats;
 		})());
+		setHiding(e);
 	};
 
 	return (
@@ -76,9 +69,7 @@ function CreateNewDialogForm({isHide, setHiding, setChats, chats}) {
 					tabIndex={0}
 					onClick={setHiding}>&times;</span>
 				<h2>Create new chat</h2><br/>
-				<input className={CNDialogFormStyles.login} ref={(input) => { loginForm = input; }} type="text" name="login" placeholder="Login" />
-				<input className={CNDialogFormStyles.name} ref={(input) => { nameForm = input; }} type="text" name="name" id="password" placeholder="Name" />
-				<input className={CNDialogFormStyles.surname} ref={(input) => { surnameForm = input; }} type="text" name="name" id="password" placeholder="Surname" />
+				<input className={CNDialogFormStyles.topic} ref={(input) => { topicForm = input; }} type="text" name="topic" placeholder="Chat Topic" />
 				<button onClick={createChatButt}><span>Create new chat</span></button>
 			</div>
 		</div>
