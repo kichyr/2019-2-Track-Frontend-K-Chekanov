@@ -6,16 +6,28 @@ import CreateNewChat from '../CreateNewChat/CreateNewChat';
 
 function getDialogsList() {
 	const data = JSON.parse(localStorage.getItem('DialogList'));
-	return data;
+	return data == null ? [] : data;
+}
+
+function getChat(chatIdParameter) {
+	const messages = JSON.parse(localStorage.getItem('messages'));
+	const chatInfo = JSON.parse(localStorage.getItem('DialogList'))[chatIdParameter];
+	return {chatId: chatIdParameter, topic: chatInfo.topic, messages: messages[chatIdParameter]};
 }
 
 
-
-const generateList = (chats) => {
-	return chats.map(
+const generateList = (chats, setAppState) => (
+	chats.map(
 		(chat, index) => (
 			<div className={styles.chatwrap} key={index.toString()}>
-				<div className={styles.wrap} id={chat.chat_id}>
+				<div 
+					onClick={(e) => {openChat(
+						chat.chat_id, setAppState);}}
+					role = "button"
+					tabIndex={0}
+					className={styles.wrap}
+					id={chat.chat_id}
+				>
 					<img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
 					<div className={styles.meta}>
 						<div className={styles.topic}>{`${chat.topic}`} </div>
@@ -28,31 +40,39 @@ const generateList = (chats) => {
 				</div>
 			</div>
 		)
-	);
-};
+	)
+);
 
-function DialogListImpl({chats}) {
+function DialogListImpl({chats, setAppState}) {
 	return (
 		<div className={styles.dialogsListContainer}>
-			{chats !== null && generateList(chats)}
+			{chats !== null && generateList(chats, setAppState)}
 		</div>
 	);
 }
 
-function DialogList() {
-	const [chats, setChats] = useState([]);
+function openChat(chatId, setAppState) {
+	setAppState({
+		appPage: 'Chat',
+		openedChat: getChat(chatId)
+	});
+}
 
+function DialogList({appState, setAppState}) {
+	const [chats, setChats] = useState([]);
 	const loadExistingChats = () => {
 		setChats(getDialogsList());
 	};
 	useEffect(loadExistingChats, []);
 
 	return (
-		<React.Fragment>
+		<div className={styles.dialog_list_wrap} 
+			style={appState.appPage === 'ChatList' ? {left: '0%'} : {left: '-100%'}}
+		>
 			<TopLineDialogList />
-			<DialogListImpl chats={chats} setChats={setChats}/>
+			<DialogListImpl chats={chats} setChats={setChats} setAppState={setAppState}/>
 			<CreateNewChat setChats={setChats} chats={chats}/>
-		</React.Fragment>
+		</div>
 	);
 }
 

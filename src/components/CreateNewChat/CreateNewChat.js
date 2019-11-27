@@ -13,7 +13,7 @@ function createNewChat(Topic) {
 	else {
 		data = JSON.parse(localStorage.getItem('DialogList'));
 	}
-	data.push({'chat_id': data.length, 'topic': Topic, 'lastmessage': ''});
+	data.push({chat_id: data.length, topic: Topic, lastmessage: ''});
 	localStorage.setItem('DialogList', JSON.stringify(data));
 	let mdata;
 	if(localStorage.getItem('messages') == null) {
@@ -23,7 +23,7 @@ function createNewChat(Topic) {
 	else {
 		mdata = JSON.parse(localStorage.getItem('messages'));
 	}
-	mdata[data.size] = [];
+	mdata[data.length] = [];
 	localStorage.setItem('messages', JSON.stringify(mdata));
 	return data[data.length - 1];
 }
@@ -46,9 +46,7 @@ function CreateNewDialogForm({isHide, setHiding, setChats, chats}) {
 	const createChatButt = (e)=>{
 		e.preventDefault();
 		setChats((()=>{
-			const newChat = createNewChat(
-				topicForm.value
-			);
+			const newChat = createNewChat(topicForm.value);
 			const newChats =  [...chats, newChat];
 			return newChats;
 		})());

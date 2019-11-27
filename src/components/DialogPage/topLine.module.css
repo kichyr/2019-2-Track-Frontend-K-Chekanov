@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    font-size: 3vh;
+    background-color: #0084ff;
+    height: 10vh;
+}
+.chatImg {
+    flex: 1;
+    max-height: 10vh;
+    max-width: 10vh;
+    border-radius: 50%;
+}
+.topic {
+    color: #fff;
+    margin: auto;
+    padding-right: 20px;
+    flex: 1;
+    text-align:right;
+}
