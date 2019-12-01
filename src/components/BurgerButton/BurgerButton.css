@@ -13,9 +13,9 @@
 }
 
 .burgerButt > div{
-    width: 3em;
-    height: 0.6em;
+    width: 2.5em;
+    height: 0.5em;
     background-color: white;
     margin: 0.1em 3em;
-    border-radius: 10%;
+    border-radius: 5%;
 }

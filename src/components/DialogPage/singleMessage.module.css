@@ -10,16 +10,25 @@
     color: Gray;
 }
 
+.singleMessContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .singleMess {
     word-wrap: break-word;
     display: inline-block;
     clear: both;
     padding: 20px;
     border-radius: 30px;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     font-size: 3vh; 
     text-align:right;
     max-width: 70%;
+    animation: msg;
+    animation-duration: 0.3s;
 }
 [sender = him]{
     background: #eee;
@@ -41,10 +50,6 @@
     border-bottom-right-radius: 30px;
 }
 
-[animation = "newMessage"] {
-    animation: msg;
-    animation-duration: 0.3s;
-}
 @keyframes msg {
     0% {
         transform: scale(0);

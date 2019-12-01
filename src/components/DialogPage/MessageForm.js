@@ -4,6 +4,8 @@ import singleMessStyles from './singleMessage.module.css';
 import WHOAMI from '../whoami';
 import topLineStyles from './topLine.module.css';
 import styles from './styles.module.css';
+import PropTypes from 'prop-types';
+import BackArrow from '../BackArrow/BackArrow';
 // to delete
 function getTime() {
 	const today = new Date();
@@ -34,29 +36,46 @@ class Message {
 	}
 }
 
-function TopLine({topic, setAppState}) {
+function TopLine({topic, appState, setAppState}) {
 	return (
 		<div className={topLineStyles.container}>
-			<BurgerButton onClick={
-				(e)=>{setAppState.appPage='Chat';}
-			}/>
+			<div onClick={
+				(e)=>{setAppState(Object.assign({}, appState, {appPage: 'ChatList', prevAppPage: 'Chat'}));}
+			}
+			style={{flex: '0.2'}}
+			role = "button"
+			tabIndex={0}>
+				<BackArrow />
+			</div>
 			<div className={topLineStyles.topic}> {topic} </div>
-			<img className={topLineStyles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar" />
 		</div>
 	);
 }
 
-function MessagesContainer({messages}) {
+function MessagesContainer({messages, appState, setAppState}) {
+	let mContainer;
+	useEffect(() => {
+		// Обновляем заголовок документа с помощью API браузера
+		mContainer.scrollTop = mContainer.scrollHeight;
+	},[messages,]);
 	return (
-		<div className={styles.result}>
+		<div className={styles.result}
+			style={{scrollTop: 'scrollHeight'}}
+			ref={(el) => { mContainer = el; }}
+		>
 			{messages.map(
 				(message, index) => (
-					<div className={singleMessStyles.singleMess}
-						key={index.toString()}
-						sender={message.userId === WHOAMI.userId ? 'me' : 'him'}
-					>
-						<div className={singleMessStyles.singleMessText}> {message.messageText} </div>
-						<p className={singleMessStyles.dateTime}> {message.time} </p>
+					<div key={index.toString()} className={singleMessStyles.singleMessContainer}>
+						<input type='image' onClick={
+							(e)=>{setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));}
+						}
+						className={topLineStyles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar" />
+						<div className={singleMessStyles.singleMess}
+							sender={message.userId === WHOAMI.userId ? 'me' : 'him'}
+						>
+							<div className={singleMessStyles.singleMessText}> {message.messageText} </div>
+							<p className={singleMessStyles.dateTime}> {message.time} </p>
+						</div>
 					</div>
 				)
 			)}
@@ -67,16 +86,13 @@ function MessagesContainer({messages}) {
 function InputPanel({appState, setAppState}) {
 	const sendMessage = (e) => {
 		e.preventDefault();
-		if(true) {
-			e.preventDefault();
-			const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value);
-			postMessage(newMess);
-			setAppState(
-				Object.assign({}, appState, 
-					Object.assign(appState.openedChat, 
-						{'messages': [...appState.openedChat.messages, newMess]}))
-			);
-		}
+		const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value);
+		postMessage(newMess);
+		setAppState(
+			Object.assign({}, appState, 
+				Object.assign(appState.openedChat, 
+					{'messages': [...appState.openedChat.messages, newMess]}))
+		);
 	};
 	return (
 		<div className={styles.input_panel}>
@@ -85,9 +101,6 @@ function InputPanel({appState, setAppState}) {
 					type="text"
 					name={styles.messageText}
 					maxLength='512'
-					//onClick={sendMessage}
-					//role = "button"
-					//tabIndex={0}
 					placeholder="Введите сообщеине" />
 				<input type="submit" value="Отправить" />
 			</form>
@@ -98,15 +111,61 @@ function InputPanel({appState, setAppState}) {
 function MessageForm({appState, setAppState}) {
 	return (
 		<div className={styles.message_form} 
-			style={appState.appPage === 'ChatList' ? {left: '100%'} : {left: '0%'}}
+			style={appState.appPage === 'ChatList' ? {left: '100%'} : 
+				(appState.appPage === 'ProfilePage' ? {left: '-100%'} : {left: '0%'})}
 		>
-			<TopLine topic={appState.openedChat.topic} setAppState={setAppState}/>
+			<TopLine topic={appState.openedChat.topic} appState={appState} setAppState={setAppState}/>
 			<MessagesContainer 
 				messages={appState.openedChat.messages}
+				appState={appState}
+				setAppState={setAppState}
 			/>
 			<InputPanel appState={appState} setAppState={setAppState}/>
 		</div>
 	);
 }
+
+MessageForm.propTypes = {
+	appState: PropTypes.shape({ appPage: PropTypes.string.isRequired,
+		openedChat: PropTypes.shape({
+			chatId: PropTypes.number,
+			topic: PropTypes.string.isRequired,
+			messages: PropTypes.array.isRequired
+		})}).isRequired,
+	setAppState: PropTypes.func.isRequired,
+};
+
+InputPanel.propTypes = {
+	appState: PropTypes.shape({ appPage: PropTypes.string.isRequired,
+		openedChat: PropTypes.shape({
+			chatId: PropTypes.number,
+			topic: PropTypes.string.isRequired,
+			messages: PropTypes.array.isRequired
+		})}).isRequired,
+	setAppState: PropTypes.func.isRequired,
+};
+
+
+MessagesContainer.propTypes = {
+	messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+	appState: PropTypes.shape({ appPage: PropTypes.string.isRequired,
+		openedChat: PropTypes.shape({
+			chatId: PropTypes.number,
+			topic: PropTypes.string.isRequired,
+			messages: PropTypes.array.isRequired
+		})}).isRequired,
+	setAppState: PropTypes.func.isRequired,
+};
+
+TopLine.propTypes = {
+	topic: PropTypes.string.isRequired,
+	appState: PropTypes.shape({ appPage: PropTypes.string.isRequired,
+		openedChat: PropTypes.shape({
+			chatId: PropTypes.number,
+			topic: PropTypes.string.isRequired,
+			messages: PropTypes.array.isRequired
+		})}).isRequired,
+	setAppState: PropTypes.func.isRequired,
+};
 
 export default MessageForm;

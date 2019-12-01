@@ -11,9 +11,9 @@
     border-radius: 50%;
 }
 .topic {
+    font-size: 5vh;
     color: #fff;
     margin: auto;
-    padding-right: 20px;
     flex: 1;
-    text-align:right;
+    text-align:center;
 }
