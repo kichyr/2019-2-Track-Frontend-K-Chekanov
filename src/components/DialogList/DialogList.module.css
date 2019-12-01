@@ -156,7 +156,7 @@ adder-new-dialog-button {
     width: 5 vh;
     display: flex;
 }
-img {
+.chatImg {
     margin: 3vh;
     flex: 1;
     max-height: 10vh;

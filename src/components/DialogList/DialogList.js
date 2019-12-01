@@ -12,6 +12,7 @@ function getDialogsList() {
 function getChat(chatIdParameter) {
 	const messages = JSON.parse(localStorage.getItem('messages'));
 	const chatInfo = JSON.parse(localStorage.getItem('DialogList'))[chatIdParameter];
+	console.log({chatId: chatIdParameter, topic: chatInfo.topic, messages: messages[chatIdParameter]})
 	return {chatId: chatIdParameter, topic: chatInfo.topic, messages: messages[chatIdParameter]};
 }
 
@@ -28,7 +29,7 @@ const generateList = (chats, setAppState) => (
 					className={styles.wrap}
 					id={chat.chat_id}
 				>
-					<img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
+					<img className={styles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
 					<div className={styles.meta}>
 						<div className={styles.topic}>{`${chat.topic}`} </div>
 						<div className={styles.preview}>{chat.lastmessage} </div>

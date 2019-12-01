@@ -13,7 +13,8 @@ function createNewChat(Topic) {
 	else {
 		data = JSON.parse(localStorage.getItem('DialogList'));
 	}
-	data.push({chat_id: data.length, topic: Topic, lastmessage: ''});
+	const chatId = data.length;
+	data.push({chat_id: chatId, topic: Topic, lastmessage: ''});
 	localStorage.setItem('DialogList', JSON.stringify(data));
 	let mdata;
 	if(localStorage.getItem('messages') == null) {
@@ -23,7 +24,7 @@ function createNewChat(Topic) {
 	else {
 		mdata = JSON.parse(localStorage.getItem('messages'));
 	}
-	mdata[data.length] = [];
+	mdata[chatId] = [];
 	localStorage.setItem('messages', JSON.stringify(mdata));
 	return data[data.length - 1];
 }

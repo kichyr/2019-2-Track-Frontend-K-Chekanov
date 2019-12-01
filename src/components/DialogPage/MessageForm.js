@@ -18,10 +18,11 @@ function getChatMessages(chatId) {
 	return [ messages[chatId].topic, messages[chatId].messages ];
 }
 
-function postMessage(chatId, userId, messageText) {
+function postMessage(message) {
 	const data = JSON.parse(localStorage.getItem('messages'));
-	const newMessage = new Message(chatId, userId, messageText);
-	data[chatId].message.push(newMessage);
+	data[message.chatId].push(message);
+	localStorage.setItem('messages', JSON.stringify(data));
+
 }
 
 class Message {
@@ -37,7 +38,7 @@ function TopLine({topic, setAppState}) {
 	return (
 		<div className={topLineStyles.container}>
 			<BurgerButton onClick={
-				(e)=>{setAppState.appPage='Chat'}
+				(e)=>{setAppState.appPage='Chat';}
 			}/>
 			<div className={topLineStyles.topic}> {topic} </div>
 			<img className={topLineStyles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar" />
@@ -51,10 +52,10 @@ function MessagesContainer({messages}) {
 			{messages.map(
 				(message, index) => (
 					<div className={singleMessStyles.singleMess}
-						key={index.toString}
-						sender={Message.userId === WHOAMI.userId ? 'me' : 'him'}
+						key={index.toString()}
+						sender={message.userId === WHOAMI.userId ? 'me' : 'him'}
 					>
-						<div className={singleMessStyles.singleMessText}> {message.text} </div>
+						<div className={singleMessStyles.singleMessText}> {message.messageText} </div>
 						<p className={singleMessStyles.dateTime}> {message.time} </p>
 					</div>
 				)
@@ -64,10 +65,32 @@ function MessagesContainer({messages}) {
 }
 
 function InputPanel({appState, setAppState}) {
+	const sendMessage = (e) => {
+		e.preventDefault();
+		if(true) {
+			e.preventDefault();
+			const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value);
+			postMessage(newMess);
+			setAppState(
+				Object.assign({}, appState, 
+					Object.assign(appState.openedChat, 
+						{'messages': [...appState.openedChat.messages, newMess]}))
+			);
+		}
+	};
 	return (
 		<div className={styles.input_panel}>
-			<textarea name={styles.messageText} placeholder="Введите сообщеине" />
-			<button>Send</button>
+			<form className={styles.sendMessForm} onSubmit={sendMessage}>
+				<input
+					type="text"
+					name={styles.messageText}
+					maxLength='512'
+					//onClick={sendMessage}
+					//role = "button"
+					//tabIndex={0}
+					placeholder="Введите сообщеине" />
+				<input type="submit" value="Отправить" />
+			</form>
 		</div>
 	);
 }
