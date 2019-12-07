@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TopLineDialogList from '../TopLineDialogList/TopLineDialogList';
 import styles from './DialogList.module.css';
 import CreateNewChat from '../CreateNewChat/CreateNewChat';
+import { useHistory } from "react-router-dom";
 
 
 function getDialogsList() {
@@ -17,13 +18,16 @@ function getChat(chatIdParameter) {
 }
 
 
-const generateList = (chats, setAppState) => (
+const GenerateList = (chats, setAppState) => {
+	let history = useHistory();
+	return (
 	chats.map(
 		(chat, index) => (
 			<div className={styles.chatwrap} key={index.toString()}>
 				<div 
-					onClick={(e) => {openChat(
-						chat.chat_id, setAppState);}}
+					onClick={(e) => {
+						history.push('/chat')
+						openChat(chat.chat_id, setAppState);}}
 					role = "button"
 					tabIndex={0}
 					className={styles.wrap}
@@ -42,12 +46,13 @@ const generateList = (chats, setAppState) => (
 			</div>
 		)
 	)
-);
+	);
+}
 
 function DialogListImpl({chats, setAppState}) {
 	return (
 		<div className={styles.dialogsListContainer}>
-			{chats !== null && generateList(chats, setAppState)}
+			{chats !== null && GenerateList(chats, setAppState)}
 		</div>
 	);
 }
@@ -55,7 +60,8 @@ function DialogListImpl({chats, setAppState}) {
 function openChat(chatId, setAppState) {
 	setAppState({
 		appPage: 'Chat',
-		openedChat: getChat(chatId)
+		openedChat: getChat(chatId),
+		prevAppPage: 'ChatList'
 	});
 }
 
@@ -67,9 +73,7 @@ function DialogList({appState, setAppState}) {
 	useEffect(loadExistingChats, []);
 
 	return (
-		<div className={styles.dialog_list_wrap} 
-			style={appState.appPage === 'ChatList' ? {left: '0%'} : {left: '-100%'}}
-		>
+		<div className={styles.dialog_list_wrap} >
 			<TopLineDialogList />
 			<DialogListImpl chats={chats} setChats={setChats} setAppState={setAppState}/>
 			<CreateNewChat setChats={setChats} chats={chats}/>

@@ -1,12 +1,16 @@
 import React from 'react';
 import styles from './styles.module.css';
 import BackArrow from '../BackArrow/BackArrow';
+import { useHistory } from "react-router-dom";
 
 function TopLine ({appState, setAppState}){
+	let history = useHistory();
 	return (
-		<div className={styles.topLineContainer}>
-			<div onClick={
-				(e)=>{setAppState(Object.assign({}, appState, {appPage: appState.prevAppPage}));}
+		<div id="profileTopLine" className={styles.topLineContainer}>
+			<div id="profileBack" onClick={
+				(e)=>{
+					history.push(appState.prevAppPage);
+				}
 			}
 			style={{flex: '0.2'}}
 			role = "button"
@@ -20,9 +24,7 @@ function TopLine ({appState, setAppState}){
 
 function ProfilePage({appState, setAppState}) {
 	return (
-		<div className={styles.profile_form} 
-			style={appState.appPage === 'ProfilePage' ? {left: '0%'} : {left: '100%'}}
-		>
+		<div className={styles.profile_form} >
 			<TopLine appState={appState} setAppState={setAppState}/>
 			<img className={styles.profileImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar" />
 			<div className={styles.name}>Кирилл Чеканов</div>

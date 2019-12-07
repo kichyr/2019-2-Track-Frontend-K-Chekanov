@@ -10,11 +10,11 @@ import {
 	Link,
 	withRouter
 } from "react-router-dom";
-import { match } from 'minimatch';
+import { AnimatedSwitch } from 'react-router-transition';
 
 
 
-const App = withRouter((props) => {
+const App = (props) => {
 	const [appState, setAppState] = useState( 
 		{
 			appPage: '', // Chat, ProfilePage
@@ -26,68 +26,73 @@ const App = withRouter((props) => {
 			}
 		}
 	);
-useEffect(()=>{
-	switch (props.location.pathname) {
-		case '/':
-			if (appState.appPage !== 'ChatList')
-				setAppState({...appState, prevAppPage: appState.appPage, appPage: 'ChatList'});
-			break;
 
-		case '/profile':
-			if (appState.appPage !== 'ProfilePage')
-				setAppState({...appState, prevAppPage: appState.appPage, appPage: 'ProfilePage'});
-			break;
-			
-		case '/chat':
-			if (appState.appPage !== 'Chat')
-				setAppState({...appState, prevAppPage: appState.appPage, appPage: 'Chat'});
-			break;	
-		default:
-			break;
-	}
-},[]);
-
-	useEffect(
-		()=>{
-			switch (appState.appPage) {
-				case 'ProfilePage':
-					props.history.replace('profile');
-					break;
-				
-				case 'ChatList':
-					props.history.push('/');
-					break;
-			
-				case 'Chat':
-					props.history.replace('/chat');
-					break;
-				default:
-					break;
-			}
-			
-		},
-		[appState.appPage]
-	);
-	console.log(appState.appPage + appState.appPage);
 	return (
-		<React.Fragment>
-			<MessageForm appState={appState} setAppState={setAppState}/> 
-			<DialogList appState={appState} setAppState={setAppState}/> 
-			<ProfilePage appState={appState} setAppState={setAppState} />
-		</React.Fragment>
-	);
-});
+	<Router>
+		<AnimatedSwitch
+		atEnter={{ opacity: 0 }}
+		atLeave={{ opacity: 0 }}
+		atActive={{ opacity: 1 }}
+		className="switch-wrapper"
+		>
+
+	<Route path="/chat/">
+			{(props)=>{
+					if(appState.appPage != 'Chat')
+						setAppState({...appState, appPage:'Chat'})
+					return <MessageForm appState={appState} setAppState={setAppState}/> 
+				}
+			}
+		</Route>
+		<Route exact path="/">
+			{(props)=>{
+					if(appState.appPage !== 'ChatList')
+						setAppState({...appState, appPage:'ChatList', prevAppPage: appState.appPage})
+					return <DialogList appState={appState} setAppState={setAppState}/> 
+				}
+			}
+		</Route>
+		<Route path="/profile/">
+		{(props)=>{
+					if(appState.appPage !== 'ProfilePage')
+						setAppState({...appState, appPage:'ProfilePage', prevAppPage: appState.appPage})
+					return <ProfilePage appState={appState} setAppState={setAppState}/>
+				}
+			}
+		</Route>
+		</AnimatedSwitch>
+	</Router>
+	)
+}
 
 const RouteApp = (() => {
 	return (
 		<Router>
-			<Switch>
-				<Route path='/(profile||Chat)' 
-					component={App}
+	<AnimatedSwitch
+      atEnter={{ opacity: 0 }}
+      atLeave={{ opacity: 0 }}
+      atActive={{ opacity: 1 }}
+      className="switch-wrapper"
+    >
+      <Route exact path="/">
+	  	{(props)=>(App({...props, appPage:'ChatList'}))}
+	  </Route>
+      <Route path="/profile/" component={(props)=>(App({...props, appPage:'ProfilePage'}))} />
+      <Route path="/chat/" component={(props)=>(App({...props, appPage:'Chat'}))} />
+    </AnimatedSwitch>
+				
+				{/* <Route exact path='/'
+					component={(props)=>(App({...props, appPage:'ChatList'}))}
+				/>
+				<Route exact path='/profile' 
+				
+					component={(props)=>(App({...props, appPage:'ProfilePage'}))}
 				/> 
-			</Switch>
+				<Route exact path='/chat' 
+					component={(props)=>(App({...props, appPage:'Chat'}))}
+				/>  */}
 		</Router>
 	);
 });
 
-export default RouteApp;
+export default App;

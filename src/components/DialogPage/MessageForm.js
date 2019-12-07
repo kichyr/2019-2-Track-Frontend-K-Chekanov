@@ -5,6 +5,7 @@ import WHOAMI from '../whoami';
 import topLineStyles from './topLine.module.css';
 import styles from './styles.module.css';
 import PropTypes from 'prop-types';
+import { useHistory } from "react-router-dom";
 import BackArrow from '../BackArrow/BackArrow';
 // to delete
 function getTime() {
@@ -37,10 +38,14 @@ class Message {
 }
 
 function TopLine({topic, appState, setAppState}) {
+	let history = useHistory();
 	return (
-		<div className={topLineStyles.container}>
-			<div onClick={
-				(e)=>{setAppState(Object.assign({}, appState, {appPage: 'ChatList', prevAppPage: 'Chat'}));}
+		<div id="chatTopLine" className={topLineStyles.container}>
+			<div id="chatBack" onClick={
+				(e)=>{
+					setAppState(Object.assign({}, appState, {appPage: 'ChatList', prevAppPage: history.location}));
+					history.push("/")
+				}
 			}
 			style={{flex: '0.2'}}
 			role = "button"
@@ -54,6 +59,7 @@ function TopLine({topic, appState, setAppState}) {
 
 function MessagesContainer({messages, appState, setAppState}) {
 	let mContainer;
+	let history = useHistory();
 	useEffect(() => {
 		// Обновляем заголовок документа с помощью API браузера
 		mContainer.scrollTop = mContainer.scrollHeight;
@@ -67,7 +73,9 @@ function MessagesContainer({messages, appState, setAppState}) {
 				(message, index) => (
 					<div key={index.toString()} className={singleMessStyles.singleMessContainer}>
 						<input type='image' onClick={
-							(e)=>{setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));}
+							(e)=>{
+								//setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));
+								history.push("/profile", appState)}
 						}
 						className={topLineStyles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="Avatar" />
 						<div className={singleMessStyles.singleMess}
@@ -110,10 +118,7 @@ function InputPanel({appState, setAppState}) {
 
 function MessageForm({appState, setAppState}) {
 	return (
-		<div className={styles.message_form} 
-			style={appState.appPage === 'ChatList' ? {left: '100%'} : 
-				(appState.appPage === 'ProfilePage' ? {left: '-100%'} : {left: '0%'})}
-		>
+		<div className={styles.message_form} >
 			<TopLine topic={appState.openedChat.topic} appState={appState} setAppState={setAppState}/>
 			<MessagesContainer 
 				messages={appState.openedChat.messages}

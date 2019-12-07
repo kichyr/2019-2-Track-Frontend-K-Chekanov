@@ -14,7 +14,7 @@
   height: 12px;
   left: -2px;
   position: absolute;
-  width: 100%;
+  width: 20vh;
   border-radius: 10px;
 }
 .arrowTop:after, .arrowBottom:after {
