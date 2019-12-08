@@ -16,5 +16,6 @@ deploy:
   on:
     branch:
       - master
+      - gh-pages
       - devel
       - hw5
