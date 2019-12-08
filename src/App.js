@@ -17,28 +17,30 @@ const App = (props) => {
     },
   })
 
+  const publicUrl = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : ''
+
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <AnimatedSwitch
         atEnter={{ opacity: 0 }}
         atLeave={{ opacity: 0 }}
         atActive={{ opacity: 1 }}
         className="switch-wrapper"
       >
-        <Route path={`${process.env.PUBLIC_URL}/chat/`}>
+        <Route path={`${publicUrl}/chat/`}>
           {(props) => {
             if (appState.appPage !== 'Chat') setAppState({ ...appState, appPage: 'Chat' })
             return <MessageForm appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route exact path={`${process.env.PUBLIC_URL}/`}>
+        <Route exact path={`${publicUrl}/`}>
           {(props) => {
             if (appState.appPage !== 'ChatList')
               setAppState({ ...appState, appPage: 'ChatList', prevAppPage: appState.appPage })
             return <DialogList appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route path={`${process.env.PUBLIC_URL}/profile/`}>
+        <Route path={`${publicUrl}/profile/`}>
           {(props) => {
             if (appState.appPage !== 'ProfilePage')
               setAppState({ ...appState, appPage: 'ProfilePage', prevAppPage: appState.appPage })
