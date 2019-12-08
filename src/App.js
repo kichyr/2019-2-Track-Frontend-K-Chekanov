@@ -25,20 +25,20 @@ const App = (props) => {
         atActive={{ opacity: 1 }}
         className="switch-wrapper"
       >
-        <Route path="/chat/">
+        <Route path={`${process.env.PUBLIC_URL}/chat/`}>
           {(props) => {
             if (appState.appPage !== 'Chat') setAppState({ ...appState, appPage: 'Chat' })
             return <MessageForm appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route exact path="/">
+        <Route exact path={`${process.env.PUBLIC_URL}/`}>
           {(props) => {
             if (appState.appPage !== 'ChatList')
               setAppState({ ...appState, appPage: 'ChatList', prevAppPage: appState.appPage })
             return <DialogList appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route path="/profile/">
+        <Route path={`${process.env.PUBLIC_URL}/profile/`}>
           {(props) => {
             if (appState.appPage !== 'ProfilePage')
               setAppState({ ...appState, appPage: 'ProfilePage', prevAppPage: appState.appPage })
