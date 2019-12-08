@@ -18,7 +18,7 @@ const App = (props) => {
   })
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <AnimatedSwitch
         atEnter={{ opacity: 0 }}
         atLeave={{ opacity: 0 }}
