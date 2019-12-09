@@ -42,7 +42,7 @@ function TopLine({ topic, appState, setAppState }) {
         id="chatBack"
         onClick={(e) => {
           setAppState(Object.assign({}, appState, { appPage: 'ChatList', prevAppPage: history.location }))
-          history.push('/')
+          history.push(`${window.publicUrl}/`)
         }}
         style={{ flex: '0.2' }}
         role="button"
@@ -79,7 +79,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
             type="image"
             onClick={(e) => {
               //setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));
-              history.push('/profile', appState)
+              history.push(`${window.publicUrl}/profile`, appState)
             }}
             className={topLineStyles.chatImg}
             src="http://emilcarlsson.se/assets/rachelzane.png"
@@ -107,6 +107,7 @@ function InputPanel({ appState, setAppState }) {
         Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
       ),
     )
+    e.target[0].value = ''
   }
   return (
     <div className={styles.input_panel}>

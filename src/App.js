@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DialogList from './components/DialogList/DialogList'
 import MessageForm from './components/DialogPage/MessageForm'
 import ProfilePage from './components/ProfilePage/ProfilePage'
@@ -16,8 +16,11 @@ const App = (props) => {
       messages: [],
     },
   })
+  useEffect(() => {
+    if (!Array.isArray(JSON.parse(localStorage.getItem('DialogList')))) localStorage.clear()
+  }, [])
 
-  const publicUrl = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : ''
+  window.publicUrl = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : ''
 
   return (
     <Router>
@@ -27,20 +30,20 @@ const App = (props) => {
         atActive={{ opacity: 1 }}
         className="switch-wrapper"
       >
-        <Route path={`${publicUrl}/chat/`}>
+        <Route path={`${window.publicUrl}/chat/`}>
           {(props) => {
             if (appState.appPage !== 'Chat') setAppState({ ...appState, appPage: 'Chat' })
             return <MessageForm appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route exact path={`${publicUrl}/`}>
+        <Route exact path={`${window.publicUrl}/`}>
           {(props) => {
             if (appState.appPage !== 'ChatList')
               setAppState({ ...appState, appPage: 'ChatList', prevAppPage: appState.appPage })
             return <DialogList appState={appState} setAppState={setAppState} />
           }}
         </Route>
-        <Route path={`${publicUrl}/profile/`}>
+        <Route path={`${window.publicUrl}/profile/`}>
           {(props) => {
             if (appState.appPage !== 'ProfilePage')
               setAppState({ ...appState, appPage: 'ProfilePage', prevAppPage: appState.appPage })
