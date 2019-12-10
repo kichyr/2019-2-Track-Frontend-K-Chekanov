@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { AnimatedSwitch } from 'react-router-transition'
 import DialogList from './components/DialogList/DialogList'
 import MessageForm from './components/DialogPage/MessageForm'
 import ProfilePage from './components/ProfilePage/ProfilePage'
 import './styles/globalStyles.css'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { AnimatedSwitch } from 'react-router-transition'
 
 const App = (props) => {
   const [appState, setAppState] = useState({

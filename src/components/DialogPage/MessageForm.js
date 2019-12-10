@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import singleMessStyles from './singleMessage.module.css'
 import WHOAMI from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
-import PropTypes from 'prop-types'
-import { useHistory } from 'react-router-dom'
 import BackArrow from '../BackArrow/BackArrow'
+import { PAPER_AIRPLANE } from './svgVariables'
 // to delete
 function getTime() {
   const today = new Date()
@@ -35,13 +36,13 @@ class Message {
 }
 
 function TopLine({ topic, appState, setAppState }) {
-  let history = useHistory()
+  const history = useHistory()
   return (
     <div id="chatTopLine" className={topLineStyles.container}>
       <div
         id="chatBack"
         onClick={(e) => {
-          setAppState(Object.assign({}, appState, { appPage: 'ChatList', prevAppPage: history.location }))
+          setAppState({ ...appState, appPage: 'ChatList', prevAppPage: history.location })
           history.push(`${window.publicUrl}/`)
         }}
         style={{ flex: '0.2' }}
@@ -57,7 +58,7 @@ function TopLine({ topic, appState, setAppState }) {
 
 function MessagesContainer({ messages, appState, setAppState }) {
   let mContainer
-  let history = useHistory()
+  const history = useHistory()
   // eslint-disable-next-line
   useEffect(() => {
     // Обновляем заголовок документа с помощью API браузера
@@ -78,7 +79,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
           <input
             type="image"
             onClick={(e) => {
-              //setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));
+              // setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));
               history.push(`${window.publicUrl}/profile`, appState)
             }}
             className={topLineStyles.chatImg}
@@ -100,20 +101,20 @@ function InputPanel({ appState, setAppState }) {
     e.preventDefault()
     const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value)
     postMessage(newMess)
-    setAppState(
-      Object.assign(
-        {},
-        appState,
-        Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
-      ),
-    )
+    setAppState({
+      ...appState,
+      ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
+    })
     e.target[0].value = ''
   }
   return (
     <div className={styles.input_panel}>
       <form className={styles.sendMessForm} onSubmit={sendMessage}>
         <input type="text" name={styles.messageText} maxLength="512" placeholder="Введите сообщеине" />
-        <input type="submit" value="Отправить" />
+        <label style={{ flex: '0.3' }}>
+          <input style={{ display: 'none' }} type="submit" value="" />
+          <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} />
+        </label>
       </form>
     </div>
   )

@@ -1,70 +1,70 @@
 .message_form {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    left: 0%;
-    width: 100%;
-    margin: 0;
-    flex: 1;
-    transition-duration: 0.5s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  margin: 0;
+  flex: 1;
+  transition-duration: 0.5s;
 }
 
 .input_panel {
-    background: #eee;
-    flex: 1;
-    padding: 10px;
-    opacity: 1;
-    display: flex;
-    font-family: Helvetica, Arial, sans-serif;
+  background: #eee;
+  flex: 1;
+  padding: 10px;
+  opacity: 1;
+  display: flex;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 textarea {
-    flex: 8;
-    color: transparent;
-    text-shadow: 0px 0px 0px #000000;
-    font-size: 3vh;
-    border-radius: 20px;
-    overflow:hidden;
-    padding-left: 20px;
+  flex: 8;
+  color: transparent;
+  text-shadow: 0px 0px 0px #000000;
+  font-size: 3vh;
+  border-radius: 20px;
+  overflow: hidden;
+  padding-left: 20px;
 }
 
 .sendMessForm {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .result {
-    vertical-align: bottom;
-    color: blue;
-    overflow-y: auto;
-    flex: 14;
+  vertical-align: bottom;
+  color: blue;
+  overflow-y: auto;
+  flex: 14;
 }
 ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+  width: 12px;
+  height: 12px;
 }
-    
-::-webkit-scrollbar-track {
-    border: 1px solid blue;
-    border-radius: 10px;
-}
-    
-::-webkit-scrollbar-thumb {
-    background: blue;
-    border-radius: 10px;
-    }
-    
-::-webkit-scrollbar-thumb:hover {
-    background: #88ba1c;  
-    }
 
-input[type=submit] {
-    background-color: #0084ff;
-    color: #fff;
-    font-size: 3vh;
-    border-radius: 20px;
-    flex: 1;
+::-webkit-scrollbar-track {
+  border: 1px solid blue;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: blue;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #88ba1c;
+}
+
+input[type='submit'] {
+  background-color: #0084ff;
+  color: #fff;
+  font-size: 3vh;
+  border-radius: 20px;
+  flex: 1;
 }

@@ -1,16 +1,16 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
-import { useHistory } from 'react-router-dom'
 
 function TopLine({ appState, setAppState }) {
-  let history = useHistory()
+  const history = useHistory()
   return (
     <div id="profileTopLine" className={styles.topLineContainer}>
       <div
         id="profileBack"
         onClick={(e) => {
-          history.push(`${window.publicUrl}/` + appState.prevAppPage)
+          history.push(`${window.publicUrl}/${appState.prevAppPage}`)
         }}
         style={{ flex: '0.2' }}
         role="button"
