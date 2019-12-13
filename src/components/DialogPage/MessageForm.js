@@ -6,7 +6,7 @@ import WHOAMI from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
-import { PAPER_AIRPLANE } from './svgVariables'
+import { PAPER_AIRPLANE, CLIP } from './svgVariables'
 // to delete
 function getTime() {
   const today = new Date()
@@ -111,9 +111,15 @@ function InputPanel({ appState, setAppState }) {
     <div className={styles.input_panel}>
       <form className={styles.sendMessForm} onSubmit={sendMessage}>
         <input type="text" name={styles.messageText} maxLength="512" placeholder="Введите сообщеине" />
-        <label style={{ flex: '0.3' }}>
+        <label
+          style={{
+            flex: '0.3',
+            display: 'flex',
+          }}
+        >
           <input style={{ display: 'none' }} type="submit" value="" />
-          <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} />
+          <div dangerouslySetInnerHTML={{ __html: CLIP }} style={{ flex: '1' }} />
+          <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} style={{ flex: '1' }} />
         </label>
       </form>
     </div>
