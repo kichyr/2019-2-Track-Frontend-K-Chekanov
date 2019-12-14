@@ -7,6 +7,8 @@ import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
 import { PAPER_AIRPLANE, CLIP } from './svgVariables'
+import { usePosition } from 'use-position'
+
 // to delete
 function getTime() {
   const today = new Date()
@@ -27,11 +29,12 @@ function postMessage(message) {
 }
 
 class Message {
-  constructor(chatId, userId, messageText) {
+  constructor(chatId, userId, messageText, contentType) {
     this.messageText = messageText
     this.userId = userId
     this.time = getTime()
     this.chatId = chatId
+    this.contentType = contentType
   }
 }
 
@@ -87,7 +90,12 @@ function MessagesContainer({ messages, appState, setAppState }) {
             alt="Avatar"
           />
           <div className={singleMessStyles.singleMess} sender={message.userId === WHOAMI.userId ? 'me' : 'him'}>
-            <div className={singleMessStyles.singleMessText}> {message.messageText} </div>
+            <div className={singleMessStyles.singleMessText}>
+              {(() => {
+                if (message.contentType === 'link') return <a href={message.messageText}> {message.messageText} </a>
+                return <div> {message.messageText} </div>
+              })()}
+            </div>
             <p className={singleMessStyles.dateTime}> {message.time} </p>
           </div>
         </div>
@@ -99,7 +107,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
 function InputPanel({ appState, setAppState }) {
   const sendMessage = (e) => {
     e.preventDefault()
-    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value)
+    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value, 'text')
     postMessage(newMess)
     setAppState({
       ...appState,
@@ -107,19 +115,71 @@ function InputPanel({ appState, setAppState }) {
     })
     e.target[0].value = ''
   }
+
+  let textInput = React.createRef()
+  let attachmentTypeDiv = React.createRef()
+  const { latitude, longitude } = usePosition()
+
+  const GeolocationHandler = (e) => {
+    e.preventDefault()
+    const newMess = new Message(
+      appState.openedChat.chatId,
+      WHOAMI.userId,
+      `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`,
+      'link',
+    )
+    postMessage(newMess)
+    setAppState({
+      ...appState,
+      ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
+    })
+    attachmentTypeDiv.current.style.transform = 'scale(0)'
+  }
+
   return (
     <div className={styles.input_panel}>
       <form className={styles.sendMessForm} onSubmit={sendMessage}>
-        <input type="text" name={styles.messageText} maxLength="512" placeholder="Введите сообщеине" />
+        <input
+          ref={textInput}
+          type="text"
+          className={styles.messageText}
+          maxLength="512"
+          placeholder="Введите сообщеине"
+        />
+        <div
+          style={{
+            margin: '5px',
+            flex: '0.3',
+            maxHeight: '100%',
+          }}
+        >
+          <div ref={attachmentTypeDiv} className={styles.attachmentType}>
+            <div>Файл</div>
+            <div onClick={GeolocationHandler}>Моя геолокация</div>
+            <div>Аудиосообщене</div>
+          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: CLIP }}
+            style={{
+              height: '100%',
+            }}
+            onClick={(e) => {
+              attachmentTypeDiv.current.style.transform =
+                attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)'
+            }}
+          />
+        </div>
+
         <label
           style={{
             flex: '0.3',
             display: 'flex',
+            maxHeight: '100%',
           }}
         >
           <input style={{ display: 'none' }} type="submit" value="" />
-          <div dangerouslySetInnerHTML={{ __html: CLIP }} style={{ flex: '1' }} />
-          <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} style={{ flex: '1' }} />
+
+          <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} style={{ flex: '1', margin: '5px' }} />
         </label>
       </form>
     </div>
