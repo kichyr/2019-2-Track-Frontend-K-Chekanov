@@ -1,2 +1,1 @@
-# 2019-2-Track-Frontend-K-Chekanov
-Учебный проект
+# 2019 2 Track Frontend K Chekanov
