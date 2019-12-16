@@ -108,7 +108,7 @@ function InputPanel({ appState, setAppState }) {
   const sendMessage = (e) => {
     e.preventDefault()
     const messText = e.target[0].value
-    if (messText.replace(/\s/gi, '') == '') {
+    if (messText.replace(/\s/gi, '') === '') {
       return
     }
     const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, messText, 'text')
