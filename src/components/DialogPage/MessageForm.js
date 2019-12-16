@@ -107,7 +107,11 @@ function MessagesContainer({ messages, appState, setAppState }) {
 function InputPanel({ appState, setAppState }) {
   const sendMessage = (e) => {
     e.preventDefault()
-    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, e.target[0].value, 'text')
+    const messText = e.target[0].value
+    if (messText.replace(/\s/gi, '') === '') {
+      return
+    }
+    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, messText, 'text')
     postMessage(newMess)
     setAppState({
       ...appState,
