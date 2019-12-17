@@ -15,7 +15,7 @@
   transform: scale(0);
 }
 
-.attachmentType > div {
+.attachmentType > * {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@
   margin: 1vh;
 }
 
-.attachmentType > div:hover {
+.attachmentType > *:hover {
   background-color: rgb(136, 133, 133);
 }
 
@@ -76,6 +76,11 @@ textarea {
   overflow-y: auto;
   flex: 14;
 }
+
+.resultDrag * {
+  pointer-events: none;
+}
+
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
