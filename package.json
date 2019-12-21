@@ -1,6 +1,6 @@
 {
   "name": "track-mail-2019-kichyr",
-  "homepage": "https://kichyr.github.io/2019-2-Track-Frontend-K-Chekanov",
+  "homepage": "http://127.0.0.1/static",
   "description": "first test app",
   "version": "0.1.0",
   "author": "Kichyr",
@@ -11,6 +11,7 @@
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-autosuggest": "^9.4.3",
     "react-dom": "^16.12.0",
     "react-geolocated": "^3.0.1",
     "react-redux": "^7.1.1",
@@ -60,6 +61,7 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "cp -r build/. ../2019-2-Track-Backend-K-Chekanov/backMessenger/static/",
     "eject": "react-scripts eject",
     "format": "prettier --write '**/*.{js,jsx,json,md}'",
     "format:changed": "pretty-quick",

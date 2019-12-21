@@ -1,29 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as plusButtonStyles from './plusButtonStyles.module.css'
 import * as CNDialogFormStyles from './createNewChatForm.module.css'
+import UserAppender from './UserAppender'
+import { HOST } from '../whoami'
 
 // create new Chat in local storage and return created chat
-function createNewChat(Topic) {
-  let data
-  if (localStorage.getItem('DialogList') == null) {
-    localStorage.setItem('DialogList', '[]')
-    data = []
-  } else {
-    data = JSON.parse(localStorage.getItem('DialogList'))
-  }
-  const chatId = data.length
-  data.push({ chat_id: chatId, topic: Topic, lastmessage: '' })
-  localStorage.setItem('DialogList', JSON.stringify(data))
-  let mdata
-  if (localStorage.getItem('messages') == null) {
-    localStorage.setItem('messages', '{}')
-    mdata = {}
-  } else {
-    mdata = JSON.parse(localStorage.getItem('messages'))
-  }
-  mdata[chatId] = []
-  localStorage.setItem('messages', JSON.stringify(mdata))
-  return data[data.length - 1]
+function createNewChat(Topic, selectedUsers) {
+  const data = { topic: Topic, users_ids: selectedUsers.map((user, index) => user.id) }
+  // Значения по умолчанию обозначены знаком *
+  return fetch(HOST + 'chats/create_chat', {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, cors, *same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'include', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data), // тип данных в body должен соответвовать значению заголовка "Content-Type"
+  }).then((response) => response.json()) // парсит JSON ответ в Javascript объект
 }
 
 function PlusButton({ setHiding }) {
@@ -42,18 +36,24 @@ function PlusButton({ setHiding }) {
 }
 
 function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
+  const [selectedUsers, setSelectedUsers] = useState([])
+
   let topicForm = null
   const createChatButt = (e) => {
     e.preventDefault()
     setChats(
       (() => {
-        const newChat = createNewChat(topicForm.value)
+        const newChat = createNewChat(topicForm.value, selectedUsers)
         const newChats = [...chats, newChat]
         return newChats
       })(),
     )
     setHiding(e)
   }
+
+  useEffect(() => {
+    setSelectedUsers([])
+  }, [isHide])
 
   return (
     <div
@@ -85,6 +85,20 @@ function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
           name="topic"
           placeholder="Chat Topic"
         />
+
+        <UserAppender selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
+
+        <div
+          style={{
+            width: '80%',
+          }}
+        >
+          {selectedUsers.map((user, index) => (
+            <div key={index.toString()}>
+              <p>{`${user.first_name} ${user.last_name}`}</p>
+            </div>
+          ))}
+        </div>
         <button onClick={createChatButt}>
           <span id="isActiveForSetHiding">Create new chat</span>
         </button>
@@ -98,9 +112,9 @@ function CreateChatStuff({ setChats, chats }) {
   const handleClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log(e.target)
     if (e.target.id === 'isActiveForSetHiding') hidden ? setHiding(false) : setHiding(true)
   }
+
   return (
     <React.Fragment>
       <PlusButton setHiding={handleClick} />

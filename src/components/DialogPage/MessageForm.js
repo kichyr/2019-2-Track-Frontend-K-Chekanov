@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import singleMessStyles from './singleMessage.module.css'
-import WHOAMI from '../whoami'
+import { WHOAMI, HOST } from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
@@ -17,23 +17,61 @@ function getTime() {
   return `${date} ${time}`
 }
 
-/* function getChatMessages(chatId) {
-	const messages = localStorage.getItem('messages');
-	return [ messages[chatId].topic, messages[chatId].messages ];
-} */
+// FIX, need to update only messages that don't exist yet
+async function getChat(chatIdParameter, setAppState) {
+  try {
+    const response = await fetch(HOST + 'chats/get_chat/' + chatIdParameter, {
+      crossDomain: true,
+      mode: 'cors',
+      method: 'GET',
+      credentials: 'include',
+    })
+    if (response.status === 200) {
+      const myJson = await response.json() //extract JSON from the http response
+      const data = JSON.parse(myJson)
+      setAppState({
+        appPage: 'Chat',
+        openedChat: {
+          chatId: data.chat_id,
+          topic: data.topic,
+          messages: data.messages.reverse(),
+        },
+        prevAppPage: 'ChatList',
+      })
+      console.log(data.messages)
+    } else {
+      console.log('not a 200')
+    }
+  } catch (err) {
+    // catches errors both in fetch and response.json
+    console.log(err)
+  } finally {
+    // do it again in 2 seconds
+    window.timerGettingMess = setTimeout(() => {
+      getChat(chatIdParameter, setAppState)
+    }, 5000)
+  }
+}
 
-function postMessage(message) {
-  const data = JSON.parse(localStorage.getItem('messages'))
-  data[message.chatId].push(message)
-  localStorage.setItem('messages', JSON.stringify(data))
+async function postMessage(message) {
+  const formData = new FormData()
+
+  formData.append('user_id', message.users_id)
+  formData.append('chat_id', message.chat_id)
+  formData.append('content', message.content)
+
+  const response = await fetch(HOST + 'chats/send_message', {
+    method: 'POST',
+    body: formData,
+  })
 }
 
 class Message {
   constructor(chatId, userId, messageText, contentType) {
-    this.messageText = messageText
-    this.userId = userId
-    this.time = getTime()
-    this.chatId = chatId
+    this.content = messageText
+    this.users_id = userId
+    this.added_at = getTime()
+    this.chat_id = chatId
     this.contentType = contentType
   }
 }
@@ -45,6 +83,7 @@ function TopLine({ topic, appState, setAppState }) {
       <div
         id="chatBack"
         onClick={(e) => {
+          clearTimeout(window.timerGettingMess)
           setAppState({ ...appState, appPage: 'ChatList', prevAppPage: history.location })
           history.push(`${window.publicUrl}/`)
         }}
@@ -89,14 +128,14 @@ function MessagesContainer({ messages, appState, setAppState }) {
             src="http://emilcarlsson.se/assets/rachelzane.png"
             alt="Avatar"
           />
-          <div className={singleMessStyles.singleMess} sender={message.userId === WHOAMI.userId ? 'me' : 'him'}>
+          <div className={singleMessStyles.singleMess} sender={message.users_id === WHOAMI.userId ? 'me' : 'him'}>
             <div className={singleMessStyles.singleMessText}>
               {(() => {
-                if (message.contentType === 'link') return <a href={message.messageText}> {message.messageText} </a>
-                return <div> {message.messageText} </div>
+                if (message.contentType === 'link') return <a href={message.messageText}> {message.content} </a>
+                return <div> {message.content} </div>
               })()}
             </div>
-            <p className={singleMessStyles.dateTime}> {message.time} </p>
+            <p className={singleMessStyles.dateTime}> {message.added_at} </p>
           </div>
         </div>
       ))}
@@ -112,11 +151,11 @@ function InputPanel({ appState, setAppState }) {
       return
     }
     const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, messText, 'text')
-    postMessage(newMess)
     setAppState({
       ...appState,
       ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
     })
+    postMessage(newMess)
     e.target[0].value = ''
   }
 
@@ -191,6 +230,10 @@ function InputPanel({ appState, setAppState }) {
 }
 
 function MessageForm({ appState, setAppState }) {
+  useEffect(() => {
+    console.log(appState.openedChat)
+    getChat(appState.openedChat.chatId, setAppState)
+  }, [])
   return (
     <div className={styles.message_form}>
       <TopLine topic={appState.openedChat.topic} appState={appState} setAppState={setAppState} />
