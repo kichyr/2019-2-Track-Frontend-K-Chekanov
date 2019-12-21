@@ -47,6 +47,7 @@
   background: #eee;
   flex: 1.5;
   padding: 10px;
+  overflow: hidden;
   opacity: 1;
   display: flex;
   height: 100%;

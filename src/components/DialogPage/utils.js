@@ -20,30 +20,29 @@ function getTime() {
   return `${date} ${time}`
 }
 
-export async function sendFile(files, appState, setAppState) {
-  generateFileMeassage(appState, setAppState, files[0])
+export async function sendFile(file, appState, setAppState) {
+  generateFileMeassage(appState, setAppState, file)
 
   const formData = new FormData()
-  formData.append('image', files[0])
+  formData.append('image', file)
   try {
     const response = await fetch('https://tt-front.now.sh/upload', {
       method: 'POST',
       body: formData,
     })
     const result = await response.json()
-    console.log('Успех:', JSON.stringify(result))
   } catch (error) {
+    // eslint-disable-next-line
     console.error('Ошибка:', error)
   }
 }
 
 function generateFileMeassage(appState, setAppState, file) {
   let contentType
-  if (file.type.includes('image')) contentType = 'image'
+  if (file.type !== undefined && file.type.includes('image')) contentType = 'image'
   else contentType = 'file'
   const link = URL.createObjectURL(file)
   const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, '', contentType, link, file.name)
-  console.log(newMess)
   setAppState({
     ...appState,
     ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),

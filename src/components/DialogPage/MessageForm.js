@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+// import AudioRecorder from 'react-audio-recorder';
 import PropTypes from 'prop-types'
+import { usePosition } from 'use-position'
 import singleMessStyles from './singleMessage.module.css'
 import WHOAMI from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
 import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
-import { usePosition } from 'use-position'
 import { sendFile, Message } from './utils'
 
 /* function getChatMessages(chatId) {
@@ -31,6 +32,7 @@ function TopLine({ topic, appState, setAppState }) {
           setAppState({ ...appState, appPage: 'ChatList', prevAppPage: history.location })
           history.push(`${window.publicUrl}/`)
         }}
+        onKeyDown={(e) => {}}
         style={{ flex: '0.2' }}
         role="button"
         tabIndex={0}
@@ -44,7 +46,7 @@ function TopLine({ topic, appState, setAppState }) {
 
 function MessagesContainer({ messages, appState, setAppState }) {
   const [dragging, setDragging] = useState(false)
-  let mContainer = React.createRef()
+  const mContainer = React.createRef()
   const history = useHistory()
   // eslint-disable-next-line
   useEffect(() => {
@@ -54,7 +56,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
     // eslint-disable-next-line
   }, [messages])
 
-  //DRAGDandDROP
+  // DRAGDandDROP
   const handleDragIn = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -62,7 +64,6 @@ function MessagesContainer({ messages, appState, setAppState }) {
   }
 
   const handleDragOut = (e) => {
-    console.log('kek')
     e.persist()
     e.preventDefault()
     e.stopPropagation()
@@ -70,18 +71,25 @@ function MessagesContainer({ messages, appState, setAppState }) {
   }
 
   const handleDrop = (e) => {
+    setDragging(false)
     e.preventDefault()
     e.stopPropagation()
     if (e.dataTransfer.items[0].kind !== 'file') return
-    var file = e.dataTransfer.items[0].getAsFile()
-    sendFile(file)
+    const file = e.dataTransfer.items[0].getAsFile()
+    sendFile(file, appState, setAppState)
   }
-  //END DRAGDandDROP
+  // END DRAGDandDROP
   return (
     <div className={styles.result} style={{ scrollTop: 'scrollHeight' }} ref={mContainer} onDragEnter={handleDragIn}>
       <DragAndDropImg dragging={dragging} handleDragOut={handleDragOut} handleDrop={handleDrop} />
       {messages.map((message, index) => (
-        <div key={index.toString()} className={singleMessStyles.singleMessContainer}>
+        <div
+          key={index.toString()}
+          className={singleMessStyles.singleMessContainer}
+          onDrop={(e) => {
+            e.preventDefault()
+          }}
+        >
           <input
             type="image"
             onClick={(e) => {
@@ -104,6 +112,8 @@ function MessagesContainer({ messages, appState, setAppState }) {
                     return (
                       <div style={{ display: 'inline' }}>
                         <a
+                          aria-label="location"
+                          // eslint-disable-next-line
                           dangerouslySetInnerHTML={{ __html: FILE_ICON }}
                           href={message.link}
                           style={{
@@ -142,8 +152,8 @@ function InputPanel({ appState, setAppState }) {
     e.target[0].value = ''
   }
 
-  let textInput = React.createRef()
-  let attachmentTypeDiv = React.createRef()
+  const textInput = React.createRef()
+  const attachmentTypeDiv = React.createRef()
   const { latitude, longitude } = usePosition()
 
   const GeolocationHandler = (e) => {
@@ -164,7 +174,7 @@ function InputPanel({ appState, setAppState }) {
 
   return (
     <div className={styles.input_panel}>
-      <form className={styles.sendMessForm} onSubmit={sendMessage}>
+      {/*  <form className={styles.sendMessForm} onSubmit={sendMessage}>
         <input
           ref={textInput}
           type="text"
@@ -180,29 +190,30 @@ function InputPanel({ appState, setAppState }) {
           }}
         >
           <div ref={attachmentTypeDiv} className={styles.attachmentType}>
-            <label>
+            <label id='input'>
               <input
                 type="file"
                 name="file"
                 onChange={(e) => {
-                  attachmentTypeDiv.current.style.transform = 'scale(0)'
-                  sendFile(e.target.files, appState, setAppState)
-                }}
+                  attachmentTypeDiv.current.style.transform = 'scale(0)';
+                  sendFile(e.target.files[0 ], appState, setAppState);
+                }}onKeyDown={(e) => {}}
                 style={{ display: 'none' }}
               />
               <div>Файл</div>
             </label>
-            <div onClick={GeolocationHandler}>Моя геолокация</div>
-            <div>Аудиосообщене</div>
+            <div role='button' onClick={GeolocationHandler} onKeyDown={(e) => {}}>Моя геолокация</div>
+            <div>sd</div>
           </div>
           <div
             dangerouslySetInnerHTML={{ __html: CLIP }}
             style={{
               height: '100%',
             }}
+            role='button'
             onClick={(e) => {
               attachmentTypeDiv.current.style.transform =
-                attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)'
+                attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)';
             }}
           />
         </div>
@@ -218,7 +229,7 @@ function InputPanel({ appState, setAppState }) {
 
           <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} style={{ flex: '1', margin: '5px' }} />
         </label>
-      </form>
+      </form> */}
     </div>
   )
 }
@@ -239,6 +250,14 @@ function DragAndDropImg({ dragging, handleDragOut, handleDrop }) {
       <div
         onDragLeave={handleDragOut}
         onDrop={handleDrop}
+        onDragOver={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
         style={{
           border: 'dashed grey 4px',
           backgroundColor: 'rgba(255,255,255,.8)',
