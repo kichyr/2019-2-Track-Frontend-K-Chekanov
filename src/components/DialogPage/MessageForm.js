@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-// import AudioRecorder from 'react-audio-recorder';
 import PropTypes from 'prop-types'
 import { usePosition } from 'use-position'
 import singleMessStyles from './singleMessage.module.css'
@@ -9,6 +8,7 @@ import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
 import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
+import { AudioMessageSender } from './utils'
 import { sendFile, Message } from './utils'
 
 /* function getChatMessages(chatId) {
@@ -82,6 +82,8 @@ function MessagesContainer({ messages, appState, setAppState }) {
   return (
     <div className={styles.result} style={{ scrollTop: 'scrollHeight' }} ref={mContainer} onDragEnter={handleDragIn}>
       <DragAndDropImg dragging={dragging} handleDragOut={handleDragOut} handleDrop={handleDrop} />
+      <AudioMessageSender appState={appState} setAppState={setAppState} />
+
       {messages.map((message, index) => (
         <div
           key={index.toString()}
@@ -174,7 +176,7 @@ function InputPanel({ appState, setAppState }) {
 
   return (
     <div className={styles.input_panel}>
-      {/*  <form className={styles.sendMessForm} onSubmit={sendMessage}>
+      <form className={styles.sendMessForm} onSubmit={sendMessage}>
         <input
           ref={textInput}
           type="text"
@@ -190,30 +192,37 @@ function InputPanel({ appState, setAppState }) {
           }}
         >
           <div ref={attachmentTypeDiv} className={styles.attachmentType}>
-            <label id='input'>
+            <label htmlFor={1} id="input">
               <input
                 type="file"
                 name="file"
                 onChange={(e) => {
-                  attachmentTypeDiv.current.style.transform = 'scale(0)';
-                  sendFile(e.target.files[0 ], appState, setAppState);
-                }}onKeyDown={(e) => {}}
+                  attachmentTypeDiv.current.style.transform = 'scale(0)'
+                  sendFile(e.target.files[0], appState, setAppState)
+                }}
+                onKeyDown={(e) => {}}
                 style={{ display: 'none' }}
               />
               <div>Файл</div>
             </label>
-            <div role='button' onClick={GeolocationHandler} onKeyDown={(e) => {}}>Моя геолокация</div>
-            <div>sd</div>
+            <div role="button" onClick={GeolocationHandler} onKeyDown={(e) => {}}>
+              Моя геолокации
+            </div>
+            <div> </div>
           </div>
           <div
+            aria-label="send message"
+            // eslint-disable-next-line
             dangerouslySetInnerHTML={{ __html: CLIP }}
             style={{
               height: '100%',
             }}
-            role='button'
+            role="button"
+            tabIndex={-1}
+            onKeyDown={() => {}}
             onClick={(e) => {
               attachmentTypeDiv.current.style.transform =
-                attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)';
+                attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)'
             }}
           />
         </div>
@@ -229,7 +238,7 @@ function InputPanel({ appState, setAppState }) {
 
           <div dangerouslySetInnerHTML={{ __html: PAPER_AIRPLANE }} style={{ flex: '1', margin: '5px' }} />
         </label>
-      </form> */}
+      </form>
     </div>
   )
 }

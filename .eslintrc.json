@@ -46,6 +46,9 @@
     "no-tabs": ["error", { "allowIndentationTabs": true }],
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
-    "no-mixed-spaces-and-tabs": "error"
+    "no-mixed-spaces-and-tabs": "error",
+    "required": {
+      "some": ["nesting", "id"]
+    }
   }
 }

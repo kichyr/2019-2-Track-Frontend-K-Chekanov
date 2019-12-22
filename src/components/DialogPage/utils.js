@@ -1,3 +1,6 @@
+import React, { useState } from 'react'
+import { ReactMic } from 'react-mic'
+import ReactAudioPlayer from 'react-audio-player'
 import WHOAMI from '../whoami'
 
 export class Message {
@@ -26,11 +29,12 @@ export async function sendFile(file, appState, setAppState) {
   const formData = new FormData()
   formData.append('image', file)
   try {
-    const response = await fetch('https://tt-front.now.sh/upload', {
+    /* const response = await fetch('https://tt-front.now.sh/upload', {
       method: 'POST',
       body: formData,
-    })
-    const result = await response.json()
+    });
+     */
+    // const result = await response.json();
   } catch (error) {
     // eslint-disable-next-line
     console.error('Ошибка:', error)
@@ -47,4 +51,62 @@ function generateFileMeassage(appState, setAppState, file) {
     ...appState,
     ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
   })
+}
+
+export function AudioMessageSender({ appState, setAppState }) {
+  const [stateReqord, setStateReqord] = useState({ record: false })
+
+  const startRecording = () => {
+    setStateReqord({
+      record: true,
+    })
+  }
+
+  const stopRecording = () => {
+    setStateReqord({
+      record: false,
+    })
+  }
+
+  const onData = (recordedBlob) => {
+    console.log('chunk of real-time data is: ', recordedBlob)
+  }
+
+  const onStop = (recordedBlob) => {
+    console.log('recordedBlob is: ', recordedBlob)
+    setStateReqord({ url: recordedBlob.blobURL })
+  }
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        left: '0px',
+        top: '0px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div>
+        <ReactMic
+          record={stateReqord.record}
+          className="frequencyBars"
+          onStop={onStop}
+          onData={onData}
+          strokeColor="#000000"
+          width={window.screen.width}
+        />
+        <button onClick={startRecording} type="button">
+          Start
+        </button>
+        <button onClick={stopRecording} type="button">
+          Stop
+        </button>
+      </div>
+      <ReactAudioPlayer src={stateReqord.url} autoPlay controls />
+    </div>
+  )
 }
