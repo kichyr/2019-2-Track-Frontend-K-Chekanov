@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import ReactAudioPlayer from 'react-audio-player'
 import PropTypes from 'prop-types'
 import { usePosition } from 'use-position'
 import singleMessStyles from './singleMessage.module.css'
@@ -8,8 +10,8 @@ import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
 import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
-import { AudioMessageSender } from './utils'
-import { sendFile, Message } from './utils'
+import { openAudioMessagePage } from '../../actions/sendMessage'
+import { AudioMessageSender, sendFile, Message } from './utils'
 
 /* function getChatMessages(chatId) {
 	const messages = localStorage.getItem('messages');
@@ -125,6 +127,12 @@ function MessagesContainer({ messages, appState, setAppState }) {
                         <p>{message.fileName}</p>
                       </div>
                     )
+                  case 'audioMessage':
+                    return (
+                      <div>
+                        <ReactAudioPlayer src={message.link} autoPlay controls />
+                      </div>
+                    )
                   default:
                     return <div> {message.messageText} </div>
                 }
@@ -139,6 +147,8 @@ function MessagesContainer({ messages, appState, setAppState }) {
 }
 
 function InputPanel({ appState, setAppState }) {
+  const dispatch = useDispatch()
+
   const sendMessage = (e) => {
     e.preventDefault()
     const messText = e.target[0].value
@@ -192,7 +202,7 @@ function InputPanel({ appState, setAppState }) {
           }}
         >
           <div ref={attachmentTypeDiv} className={styles.attachmentType}>
-            <label htmlFor={1} id="input">
+            <label id="input">
               <input
                 type="file"
                 name="file"
@@ -208,7 +218,15 @@ function InputPanel({ appState, setAppState }) {
             <div role="button" onClick={GeolocationHandler} onKeyDown={(e) => {}}>
               Моя геолокации
             </div>
-            <div> </div>
+            <div
+              onClick={(e) => {
+                dispatch(openAudioMessagePage())
+                attachmentTypeDiv.current.style.transform = 'scale(0)'
+              }}
+            >
+              {' '}
+              Аудиосообщение{' '}
+            </div>
           </div>
           <div
             aria-label="send message"

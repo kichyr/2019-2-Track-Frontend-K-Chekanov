@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { ReactMic } from 'react-mic'
-import ReactAudioPlayer from 'react-audio-player'
+import { useSelector, useDispatch } from 'react-redux'
+import styled from 'styled-components'
 import WHOAMI from '../whoami'
+import { openAudioMessagePage } from '../../actions/sendMessage'
 
 export class Message {
   constructor(chatId, userId, messageText, contentType, link = '', fileName = '') {
@@ -53,8 +55,54 @@ function generateFileMeassage(appState, setAppState, file) {
   })
 }
 
+const CloseButt = styled.div`
+  position: relative;
+  flex: 1;
+  height: 100%;
+  opacity: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 1;
+  }
+  &:before,
+  &:after {
+    position: absolute;
+    content: ' ';
+    height: 30%;
+    width: 3px;
+    background-color: #333;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+`
+
+const StartStopButt = styled.div`
+  position: relative;
+  flex: 1;
+  height: 100%;
+  opacity: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-color: #333;
+  font-size: 7vh;
+
+  &:hover {
+    opacity: 1;
+  }
+`
+
 export function AudioMessageSender({ appState, setAppState }) {
   const [stateReqord, setStateReqord] = useState({ record: false })
+  const isOpened = useSelector((state) => state.isMessagePageOpen)
+  const dispatch = useDispatch()
 
   const startRecording = () => {
     setStateReqord({
@@ -68,13 +116,15 @@ export function AudioMessageSender({ appState, setAppState }) {
     })
   }
 
-  const onData = (recordedBlob) => {
-    console.log('chunk of real-time data is: ', recordedBlob)
-  }
-
   const onStop = (recordedBlob) => {
     console.log('recordedBlob is: ', recordedBlob)
-    setStateReqord({ url: recordedBlob.blobURL })
+    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, '', 'audioMessage', recordedBlob.blobURL)
+    // postMessage(newMess);
+    dispatch(openAudioMessagePage())
+    setAppState({
+      ...appState,
+      ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
+    })
   }
 
   return (
@@ -85,28 +135,65 @@ export function AudioMessageSender({ appState, setAppState }) {
         position: 'absolute',
         left: '0px',
         top: '0px',
-        display: 'flex',
+        display: isOpened ? 'flex' : 'none',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.4)',
       }}
     >
-      <div>
-        <ReactMic
-          record={stateReqord.record}
-          className="frequencyBars"
-          onStop={onStop}
-          onData={onData}
-          strokeColor="#000000"
-          width={window.screen.width}
-        />
-        <button onClick={startRecording} type="button">
-          Start
-        </button>
-        <button onClick={stopRecording} type="button">
-          Stop
-        </button>
+      <div
+        style={{
+          width: '80%',
+          height: '60%',
+          backgroundColor: '#fefefe',
+          borderRadius: '25px',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div style={{ flex: '1' }}>
+          <ReactMic
+            record={stateReqord.record}
+            className="frequencyBars"
+            onStop={onStop}
+            strokeColor="blue"
+            width={window.screen.width * 0.8}
+            height={window.screen.height * 0.3}
+          />
+        </div>
+
+        <div
+          style={{
+            flex: '1',
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+          }}
+        >
+          <CloseButt
+            onClick={() => {
+              stopRecording()
+              dispatch(openAudioMessagePage())
+            }}
+          />
+          <StartStopButt
+            onClick={(e) => {
+              e.preventDefault()
+              stateReqord.record ? stopRecording(e) : startRecording(e)
+            }}
+          >
+            {stateReqord.record ? 'Send' : 'Start'}{' '}
+          </StartStopButt>
+          {/* <button onClick={startRecording} type="button">Start</button>
+          <button onClick={stopRecording} type="button">Stop</button> */}
+        </div>
+        {/* <ReactAudioPlayer
+          src={stateReqord.url}
+          autoPlay
+          controls
+        /> */}
       </div>
-      <ReactAudioPlayer src={stateReqord.url} autoPlay controls />
     </div>
   )
 }
