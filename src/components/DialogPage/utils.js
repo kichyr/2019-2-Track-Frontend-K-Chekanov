@@ -31,12 +31,10 @@ export async function sendFile(file, appState, setAppState) {
   const formData = new FormData()
   formData.append('image', file)
   try {
-    /* const response = await fetch('https://tt-front.now.sh/upload', {
+    await fetch('https://tt-front.now.sh/upload', {
       method: 'POST',
       body: formData,
-    });
-     */
-    // const result = await response.json();
+    })
   } catch (error) {
     // eslint-disable-next-line
     console.error('Ошибка:', error)
@@ -125,6 +123,7 @@ export function AudioMessageSender({ appState, setAppState }) {
       ...appState,
       ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
     })
+    sendAudioMessage(recordedBlob)
   }
 
   return (
@@ -196,4 +195,18 @@ export function AudioMessageSender({ appState, setAppState }) {
       </div>
     </div>
   )
+}
+
+async function sendAudioMessage(audioBlob) {
+  const formData = new FormData()
+  formData.append('audio', audioBlob)
+  try {
+    await fetch('https://tt-front.now.sh/upload', {
+      method: 'POST',
+      body: formData,
+    })
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error('Ошибка:', error)
+  }
 }

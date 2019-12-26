@@ -30,6 +30,7 @@
     "DEBUG": false
   },
   "rules": {
+    "semi": [2, "always"],
     "import/no-named-as-default": 0,
     "react/jsx-filename-extension": [
       1,
@@ -44,7 +45,6 @@
     "import/first": 0,
     "indent": ["error", 2],
     "no-tabs": ["error", { "allowIndentationTabs": true }],
-    "semi": ["error", "always"],
     "quotes": ["error", "single"],
     "no-mixed-spaces-and-tabs": "error",
     "required": {
