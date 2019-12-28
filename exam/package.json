@@ -1,5 +1,6 @@
 {
-  "name": "exam",
+  "name": "track-mail-2019-kichyr",
+  "homepage": "https://kichyr.github.io/2019-2-Track-Frontend-K-Chekanov",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,14 +37,15 @@
     "styled-components": "^4.4.1",
     "use-position": "0.0.6"
   },
-  "devDependencies": {
-    "css-loader": "^3.4.0"
-  },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "echo 1",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
   }
 }
-

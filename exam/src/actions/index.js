@@ -10,5 +10,9 @@ export function openTownInfo(town_id) {
 
 
 export function addTownToList(town) {
-    return {type: 'addedTown', town: town}
+    return {type: 'addedTown', town: town};
+}
+
+export function setInExtraInfoPage(town) {
+    return {type: 'extraInfo', location: town};
 }

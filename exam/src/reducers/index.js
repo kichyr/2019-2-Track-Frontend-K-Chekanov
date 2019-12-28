@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { openedPageReducer, addTownReducer } from './test.js';
+import { openedWeatherReducer, addTownReducer } from './test.js';
 
 const allReducers = combineReducers({
-  openedPageReducer: openedPageReducer,
+  openedWeatherReducer: openedWeatherReducer,
   townsReducer: addTownReducer,
 })
 
