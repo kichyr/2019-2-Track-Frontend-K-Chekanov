@@ -8,7 +8,7 @@ function SearchBar() {
 
 function TopLineDialogList() {
 	return (
-		<div className="container">
+		<div className="containerTopLine">
 			<BurgerButton />
 			<SearchBar/>
 		</div>

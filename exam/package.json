@@ -36,7 +36,9 @@
     "styled-components": "^4.4.1",
     "use-position": "0.0.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "css-loader": "^3.4.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -44,3 +46,4 @@
     "eject": "react-scripts eject"
   }
 }
+

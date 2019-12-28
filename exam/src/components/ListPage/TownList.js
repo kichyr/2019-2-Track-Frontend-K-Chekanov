@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import {useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import styles from './DialogList.module.css'
+import * as styles from './DialogList.module.css'
 import TopLineDialogList from '../TopLineTownList/TopLineDialogList'
 import { addTownToList } from '../../actions/index'
+import AddNewTown from '../AddNewTown/AddNewTown'
 
 
 
@@ -11,22 +12,21 @@ const townshardcode = [707860, 519188, 1283378, 1270260];
 
 const GenerateList = (towns) => {
   let history = useHistory()
-  console.log("lol" + styles)
-return towns.map((town, index) => (
-    <div className={styles.chatwrap} key={index.toString()}>
+  return towns.map((town, index) => (
+    <div className={"chatwrap"} key={index.toString()}>
       <div
         onClick={(e) => {
           history.push(`${window.publicUrl}/chat`)
         }}
         role="button"
         tabIndex={0}
-        className={styles.wrap}
+        className={"wrap"}
         id={index}
       >
-        <img className={styles.chatImg} src={`http://openweathermap.org/img/wn/${town.weather[0].icon}@2x.png`} alt="" />
-        <div className={styles.meta}>
+        <img className={"chatImg"} src={`http://openweathermap.org/img/wn/${town.weather[0].icon}@2x.png`} alt="" />
+        <div className={"meta"}>
           <div className={styles.topic}>{`${town.name}`} </div>
-          <div className={styles.preview}>{town.main.temp} </div>
+          <div className={styles.preview}>{town.main.temp - 273.15 + '°C'} </div>
         </div>
         <div className={styles.addinfo}>
           <p>{town.weather[0].description}</p>
@@ -41,7 +41,7 @@ return towns.map((town, index) => (
 function TownListImpl() {
   const towns = useSelector(state => state.townsReducer);
 
-  return <div className={styles.dialogsListContainer}>{GenerateList(towns)}</div>
+  return <div className={'dialogsListContainer'}>{GenerateList(towns)}</div>
 }
 
 function loadTown(town_id, dispatch) {
@@ -69,10 +69,10 @@ function TownList() {
   useEffect(()=>{
     loadExistingTowns(townshardcode,dispatch)}, [])
   return (
-    <div className={styles.dialog_list_wrap}>
+    <div className={'dialog_list_wrap'}>
       <TopLineDialogList />
       <TownListImpl/>
-      {/* <CreateNewTown/> */}
+      <AddNewTown/>
     </div>
   )
 }
