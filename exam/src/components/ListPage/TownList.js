@@ -23,12 +23,13 @@ return towns.map((town, index) => (
         className={styles.wrap}
         id={index}
       >
-        <img className={styles.chatImg} src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
+        <img className={styles.chatImg} src={`http://openweathermap.org/img/wn/${town.weather[0].icon}@2x.png`} alt="" />
         <div className={styles.meta}>
           <div className={styles.topic}>{`${town.name}`} </div>
           <div className={styles.preview}>{town.main.temp} </div>
         </div>
         <div className={styles.addinfo}>
+          <p>{town.weather[0].description}</p>
           <span className={styles.dot} />
           <p>21:23</p>
         </div>
@@ -38,7 +39,7 @@ return towns.map((town, index) => (
 }
 
 function TownListImpl() {
-    const towns = useSelector(state => state.townsReducer);
+  const towns = useSelector(state => state.townsReducer);
 
   return <div className={styles.dialogsListContainer}>{GenerateList(towns)}</div>
 }
