@@ -1,0 +1,19 @@
+.containerTopLine {
+    display: flex;
+    font-size: 3vh;
+    background-color: #0084ff;
+    height: 10%;
+    align-items: center
+}
+
+input {
+    flex: 3;
+    float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 3vh;
+    padding-left: 20px;
+    border-radius: 20px;
+}
