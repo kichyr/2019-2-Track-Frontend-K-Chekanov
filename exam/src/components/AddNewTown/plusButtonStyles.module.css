@@ -1,0 +1,34 @@
+.plusbut {
+    position: absolute;
+    right: 3vh;
+    bottom: 3vh;
+    border-radius: 50%;
+    width: 8vh;
+    height: 8vh;
+    background-color: #0084ff;
+    transition: all 0.3s;
+  }
+.plusbut:hover, .plusbut:active{
+    background-color: #1231FB;
+    width: 10vh;
+    height: 10vh;
+    right: 2vh;
+    bottom: 2vh;
+}
+
+.horizontal_plus {
+    position: relative;
+    background-color: #FFFFFF;
+    width: 50%;
+    height: 12.5%;
+    left: 25%;
+    top: 43.75%;
+  }
+  .vertical_plus {
+    position: relative;
+    background-color: #FFFFFF;
+    width: 12.5%;
+    height: 50%;
+    left: 43.75%;
+    top: 12.5%;
+  }

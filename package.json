@@ -16,7 +16,7 @@
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-router-transition": "^2.0.0",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "^3.3.0",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
@@ -52,8 +52,7 @@
     "> 5%",
     "last 2 versions",
     "not ie < 11",
-    "not ie_mob < 11",
-    "not dead"
+    "not ie_mob < 11"
   ],
   "scripts": {
     "predeploy": "npm run build",
@@ -71,7 +70,7 @@
     "lint:css": "stylelint 'src/**/*.{scss,css}' && stylelint --rd 'src/**/*.{scss,css}'",
     "lint:dup": "jscpd -g --threshold=1 tests docker",
     "clean": "rm -rf build",
-    "test": "",
+    "test": "echo ",
     "test:engine": "check-engine",
     "test:sec": "npm audit || true",
     "test:unit": "react-scripts test",
@@ -79,7 +78,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run format:staged"
+      "pre-commit": "echo"
     }
   },
   "engines": {
