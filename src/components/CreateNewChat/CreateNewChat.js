@@ -28,15 +28,9 @@ function createNewChat(Topic) {
 
 function PlusButton({ setHiding }) {
   return (
-    <div
-      role="button"
-      id={'isActiveForSetHiding'}
-      tabIndex={0}
-      className={plusButtonStyles.plusbut}
-      onClick={setHiding}
-    >
-      <div className={plusButtonStyles.horizontal_plus} id={'isActiveForSetHiding'} />
-      <div className={plusButtonStyles.vertical_plus} id={'isActiveForSetHiding'} />
+    <div role="button" id="isActiveForSetHiding" tabIndex={0} className={plusButtonStyles.plusbut} onClick={setHiding}>
+      <div className={plusButtonStyles.horizontal_plus} id="isActiveForSetHiding" />
+      <div className={plusButtonStyles.vertical_plus} id="isActiveForSetHiding" />
     </div>
   )
 }
@@ -102,10 +96,10 @@ function CreateChatStuff({ setChats, chats }) {
     if (e.target.id === 'isActiveForSetHiding') hidden ? setHiding(false) : setHiding(true)
   }
   return (
-    <React.Fragment>
+    <>
       <PlusButton setHiding={handleClick} />
       <CreateNewDialogForm isHide={hidden} setHiding={handleClick} setChats={setChats} chats={chats} />
-    </React.Fragment>
+    </>
   )
 }
 

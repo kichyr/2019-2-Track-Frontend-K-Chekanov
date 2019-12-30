@@ -1,21 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import ReactAudioPlayer from 'react-audio-player'
 import PropTypes from 'prop-types'
+import { usePosition } from 'use-position'
 import singleMessStyles from './singleMessage.module.css'
 import WHOAMI from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
-import { PAPER_AIRPLANE, CLIP } from './svgVariables'
-import { usePosition } from 'use-position'
-
-// to delete
-function getTime() {
-  const today = new Date()
-  const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-  const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-  return `${date} ${time}`
-}
+import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
+import { openAudioMessagePage } from '../../actions/sendMessage'
+import { AudioMessageSender, sendFile, Message } from './utils'
 
 /* function getChatMessages(chatId) {
 	const messages = localStorage.getItem('messages');
@@ -28,16 +24,6 @@ function postMessage(message) {
   localStorage.setItem('messages', JSON.stringify(data))
 }
 
-class Message {
-  constructor(chatId, userId, messageText, contentType) {
-    this.messageText = messageText
-    this.userId = userId
-    this.time = getTime()
-    this.chatId = chatId
-    this.contentType = contentType
-  }
-}
-
 function TopLine({ topic, appState, setAppState }) {
   const history = useHistory()
   return (
@@ -48,6 +34,7 @@ function TopLine({ topic, appState, setAppState }) {
           setAppState({ ...appState, appPage: 'ChatList', prevAppPage: history.location })
           history.push(`${window.publicUrl}/`)
         }}
+        onKeyDown={(e) => {}}
         style={{ flex: '0.2' }}
         role="button"
         tabIndex={0}
@@ -60,25 +47,53 @@ function TopLine({ topic, appState, setAppState }) {
 }
 
 function MessagesContainer({ messages, appState, setAppState }) {
-  let mContainer
+  const [dragging, setDragging] = useState(false)
+  const mContainer = React.createRef()
   const history = useHistory()
   // eslint-disable-next-line
   useEffect(() => {
     // Обновляем заголовок документа с помощью API браузера
     // eslint-disable-next-line
-    mContainer.scrollTop = mContainer.scrollHeight
+    mContainer.current.scrollTop = mContainer.current.scrollHeight
     // eslint-disable-next-line
   }, [messages])
+
+  // DRAGDandDROP
+  const handleDragIn = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragging(true)
+  }
+
+  const handleDragOut = (e) => {
+    e.persist()
+    e.preventDefault()
+    e.stopPropagation()
+    setDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    setDragging(false)
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.dataTransfer.items[0].kind !== 'file') return
+    const file = e.dataTransfer.items[0].getAsFile()
+    sendFile(file, appState, setAppState)
+  }
+  // END DRAGDandDROP
   return (
-    <div
-      className={styles.result}
-      style={{ scrollTop: 'scrollHeight' }}
-      ref={(el) => {
-        mContainer = el
-      }}
-    >
+    <div className={styles.result} style={{ scrollTop: 'scrollHeight' }} ref={mContainer} onDragEnter={handleDragIn}>
+      <DragAndDropImg dragging={dragging} handleDragOut={handleDragOut} handleDrop={handleDrop} />
+      <AudioMessageSender appState={appState} setAppState={setAppState} />
+
       {messages.map((message, index) => (
-        <div key={index.toString()} className={singleMessStyles.singleMessContainer}>
+        <div
+          key={index.toString()}
+          className={singleMessStyles.singleMessContainer}
+          onDrop={(e) => {
+            e.preventDefault()
+          }}
+        >
           <input
             type="image"
             onClick={(e) => {
@@ -92,8 +107,35 @@ function MessagesContainer({ messages, appState, setAppState }) {
           <div className={singleMessStyles.singleMess} sender={message.userId === WHOAMI.userId ? 'me' : 'him'}>
             <div className={singleMessStyles.singleMessText}>
               {(() => {
-                if (message.contentType === 'link') return <a href={message.messageText}> {message.messageText} </a>
-                return <div> {message.messageText} </div>
+                switch (message.contentType) {
+                  case 'link':
+                    return <a href={message.messageText}> {message.messageText} </a>
+                  case 'image':
+                    return <img alt="" src={message.link} style={{ maxWidth: '100%' }} />
+                  case 'file':
+                    return (
+                      <div style={{ display: 'inline' }}>
+                        <a
+                          aria-label="location"
+                          // eslint-disable-next-line
+                          dangerouslySetInnerHTML={{ __html: FILE_ICON }}
+                          href={message.link}
+                          style={{
+                            height: '50%',
+                          }}
+                        />
+                        <p>{message.fileName}</p>
+                      </div>
+                    )
+                  case 'audioMessage':
+                    return (
+                      <div>
+                        <ReactAudioPlayer src={message.link} autoPlay controls />
+                      </div>
+                    )
+                  default:
+                    return <div> {message.messageText} </div>
+                }
               })()}
             </div>
             <p className={singleMessStyles.dateTime}> {message.time} </p>
@@ -105,6 +147,8 @@ function MessagesContainer({ messages, appState, setAppState }) {
 }
 
 function InputPanel({ appState, setAppState }) {
+  const dispatch = useDispatch()
+
   const sendMessage = (e) => {
     e.preventDefault()
     const messText = e.target[0].value
@@ -120,8 +164,8 @@ function InputPanel({ appState, setAppState }) {
     e.target[0].value = ''
   }
 
-  let textInput = React.createRef()
-  let attachmentTypeDiv = React.createRef()
+  const textInput = React.createRef()
+  const attachmentTypeDiv = React.createRef()
   const { latitude, longitude } = usePosition()
 
   const GeolocationHandler = (e) => {
@@ -158,15 +202,42 @@ function InputPanel({ appState, setAppState }) {
           }}
         >
           <div ref={attachmentTypeDiv} className={styles.attachmentType}>
-            <div>Файл</div>
-            <div onClick={GeolocationHandler}>Моя геолокация</div>
-            <div>Аудиосообщене</div>
+            <label id="input">
+              <input
+                type="file"
+                name="file"
+                onChange={(e) => {
+                  attachmentTypeDiv.current.style.transform = 'scale(0)'
+                  sendFile(e.target.files[0], appState, setAppState)
+                }}
+                onKeyDown={(e) => {}}
+                style={{ display: 'none' }}
+              />
+              <div>Файл</div>
+            </label>
+            <div role="button" onClick={GeolocationHandler} onKeyDown={(e) => {}}>
+              Моя геолокации
+            </div>
+            <div
+              onClick={(e) => {
+                dispatch(openAudioMessagePage())
+                attachmentTypeDiv.current.style.transform = 'scale(0)'
+              }}
+            >
+              {' '}
+              Аудиосообщение{' '}
+            </div>
           </div>
           <div
+            aria-label="send message"
+            // eslint-disable-next-line
             dangerouslySetInnerHTML={{ __html: CLIP }}
             style={{
               height: '100%',
             }}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={() => {}}
             onClick={(e) => {
               attachmentTypeDiv.current.style.transform =
                 attachmentTypeDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)'
@@ -197,6 +268,49 @@ function MessageForm({ appState, setAppState }) {
       <MessagesContainer messages={appState.openedChat.messages} appState={appState} setAppState={setAppState} />
       <InputPanel appState={appState} setAppState={setAppState} />
     </div>
+  )
+}
+
+function DragAndDropImg({ dragging, handleDragOut, handleDrop }) {
+  return (
+    dragging && (
+      <div
+        onDragLeave={handleDragOut}
+        onDrop={handleDrop}
+        onDragOver={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+        style={{
+          border: 'dashed grey 4px',
+          backgroundColor: 'rgba(255,255,255,.8)',
+          position: 'absolute',
+          top: '10vh',
+          bottom: '10vh',
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: 0,
+            left: 0,
+            textAlign: 'center',
+            color: 'grey',
+            fontSize: 36,
+          }}
+        >
+          <div>drop here :)</div>
+        </div>
+      </div>
+    )
   )
 }
 

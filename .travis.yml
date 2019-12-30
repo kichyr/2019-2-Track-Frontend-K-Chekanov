@@ -20,3 +20,7 @@ deploy:
     branch:
       - exam
       - master
+      - gh-pages
+      - devel
+      - hw5
+      - hw7

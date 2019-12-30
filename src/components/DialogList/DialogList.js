@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import TopLineDialogList from '../TopLineDialogList/TopLineDialogList'
 import styles from './DialogList.module.css'
 import CreateNewChat from '../CreateNewChat/CreateNewChat'
-import { useHistory } from 'react-router-dom'
 
 function getDialogsList() {
   const data = JSON.parse(localStorage.getItem('DialogList'))
@@ -16,7 +16,7 @@ function getChat(chatIdParameter) {
 }
 
 const GenerateList = (chats, setAppState) => {
-  let history = useHistory()
+  const history = useHistory()
   return chats.map((chat, index) => (
     <div className={styles.chatwrap} key={index.toString()}>
       <div
