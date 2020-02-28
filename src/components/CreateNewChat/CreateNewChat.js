@@ -26,7 +26,7 @@ function createNewChat(Topic) {
   return data[data.length - 1]
 }
 
-function PlusButton({ setHiding }) {
+export function PlusButton({ setHiding }) {
   return (
     <div role="button" id="isActiveForSetHiding" tabIndex={0} className={plusButtonStyles.plusbut} onClick={setHiding}>
       <div className={plusButtonStyles.horizontal_plus} id="isActiveForSetHiding" />
