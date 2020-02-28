@@ -271,7 +271,7 @@ function MessageForm({ appState, setAppState }) {
   )
 }
 
-function DragAndDropImg({ dragging, handleDragOut, handleDrop }) {
+export function DragAndDropImg({ dragging, handleDragOut, handleDrop }) {
   return (
     dragging && (
       <div
