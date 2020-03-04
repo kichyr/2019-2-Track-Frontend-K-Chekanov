@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import TopLineDialogList from '../TopLineDialogList/TopLineDialogList'
 import styles from './DialogList.module.css'
 import CreateNewChat from '../CreateNewChat/CreateNewChat'
+import { openNewChat } from '../../actions/sendMessage'
 
 function getDialogsList() {
   const data = JSON.parse(localStorage.getItem('DialogList'))
@@ -15,14 +17,15 @@ export function getChat(chatIdParameter) {
   return { chatId: chatIdParameter, topic: chatInfo.topic, messages: messages[chatIdParameter] }
 }
 
-const GenerateList = (chats, setAppState) => {
+const GenerateList = (chats) => {
   const history = useHistory()
+  const dispatch = useDispatch()
   return chats.map((chat, index) => (
     <div className={styles.chatwrap} key={index.toString()}>
       <div
         onClick={(e) => {
           history.push(`${window.publicUrl}/chat`)
-          openChat(chat.chat_id, setAppState)
+          openChat(chat.chat_id, dispatch)
         }}
         role="button"
         tabIndex={0}
@@ -43,16 +46,13 @@ const GenerateList = (chats, setAppState) => {
   ))
 }
 
-function DialogListImpl({ chats, setAppState }) {
-  return <div className={styles.dialogsListContainer}>{chats !== null && GenerateList(chats, setAppState)}</div>
+function DialogListImpl() {
+  const chats = useSelector((state) => state.chatList)
+  return <div className={styles.dialogsListContainer}>{chats !== null && GenerateList(chats)}</div>
 }
 
-function openChat(chatId, setAppState) {
-  setAppState({
-    appPage: 'Chat',
-    openedChat: getChat(chatId),
-    prevAppPage: 'ChatList',
-  })
+function openChat(chatId, dispatch) {
+  dispatch(openNewChat(getChat(chatId)))
 }
 
 function DialogList({ appState, setAppState }) {
@@ -66,7 +66,7 @@ function DialogList({ appState, setAppState }) {
     <div className={styles.dialog_list_wrap}>
       <TopLineDialogList />
       <DialogListImpl chats={chats} setChats={setChats} setAppState={setAppState} />
-      <CreateNewChat setChats={setChats} chats={chats} />
+      <CreateNewChat />
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as plusButtonStyles from './plusButtonStyles.module.css'
 import * as CNDialogFormStyles from './createNewChatForm.module.css'
+import { addNewChatToChatList } from '../../actions/sendMessage'
 
 // create new Chat in local storage and return created chat
 function createNewChat(Topic) {
@@ -35,17 +37,13 @@ export function PlusButton({ setHiding }) {
   )
 }
 
-function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
+function CreateNewDialogForm({ isHide, setHiding }) {
+  const dispatch = useDispatch()
   let topicForm = null
+  //creating new chat when click on button
   const createChatButt = (e) => {
     e.preventDefault()
-    setChats(
-      (() => {
-        const newChat = createNewChat(topicForm.value)
-        const newChats = [...chats, newChat]
-        return newChats
-      })(),
-    )
+    dispatch(addNewChatToChatList(createNewChat(topicForm.value)))
     setHiding(e)
   }
 
@@ -87,7 +85,7 @@ function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
   )
 }
 
-function CreateChatStuff({ setChats, chats }) {
+function CreateChatStuff() {
   const [hidden, setHiding] = useState(false)
   const handleClick = (e) => {
     e.preventDefault()
@@ -98,7 +96,7 @@ function CreateChatStuff({ setChats, chats }) {
   return (
     <>
       <PlusButton setHiding={handleClick} />
-      <CreateNewDialogForm isHide={hidden} setHiding={handleClick} setChats={setChats} chats={chats} />
+      <CreateNewDialogForm isHide={hidden} setHiding={handleClick} />
     </>
   )
 }
