@@ -1,6 +1,7 @@
 #### joe made this: http://goel.io/joe
 #### macos ####
 # General
+/ts/utils/*.js
 *.DS_Store
 .AppleDouble
 .LSOverride
