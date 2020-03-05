@@ -9,7 +9,7 @@ function getDialogsList() {
   return data == null ? [] : data
 }
 
-function getChat(chatIdParameter) {
+export function getChat(chatIdParameter) {
   const messages = JSON.parse(localStorage.getItem('messages'))
   const chatInfo = JSON.parse(localStorage.getItem('DialogList'))[chatIdParameter]
   return { chatId: chatIdParameter, topic: chatInfo.topic, messages: messages[chatIdParameter] }
@@ -36,7 +36,7 @@ const GenerateList = (chats, setAppState) => {
         </div>
         <div className={styles.addinfo}>
           <span className={styles.dot} />
-          <p>21:23</p>
+          <p>21:22</p>
         </div>
       </div>
     </div>
