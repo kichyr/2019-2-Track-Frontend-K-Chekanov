@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as plusButtonStyles from './plusButtonStyles.module.css'
 import * as CNDialogFormStyles from './createNewChatForm.module.css'
+import { addNewChatToChatList } from '../../actions/sendMessage'
 
 // create new Chat in local storage and return created chat
 function createNewChat(Topic) {
@@ -26,32 +28,29 @@ function createNewChat(Topic) {
   return data[data.length - 1]
 }
 
-function PlusButton({ setHiding }) {
+export function PlusButton({ setHiding }) {
   return (
     <div
       role="button"
-      id={'isActiveForSetHiding'}
+      id="isActiveForSetHiding"
       tabIndex={0}
+      name="plus_butt"
       className={plusButtonStyles.plusbut}
       onClick={setHiding}
     >
-      <div className={plusButtonStyles.horizontal_plus} id={'isActiveForSetHiding'} />
-      <div className={plusButtonStyles.vertical_plus} id={'isActiveForSetHiding'} />
+      <div className={plusButtonStyles.horizontal_plus} id="isActiveForSetHiding" />
+      <div className={plusButtonStyles.vertical_plus} id="isActiveForSetHiding" />
     </div>
   )
 }
 
-function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
+function CreateNewDialogForm({ isHide, setHiding }) {
+  const dispatch = useDispatch()
   let topicForm = null
+  //creating new chat when click on button
   const createChatButt = (e) => {
     e.preventDefault()
-    setChats(
-      (() => {
-        const newChat = createNewChat(topicForm.value)
-        const newChats = [...chats, newChat]
-        return newChats
-      })(),
-    )
+    dispatch(addNewChatToChatList(createNewChat(topicForm.value)))
     setHiding(e)
   }
 
@@ -81,19 +80,22 @@ function CreateNewDialogForm({ isHide, setHiding, setChats, chats }) {
           ref={(input) => {
             topicForm = input
           }}
+          id="topic_form"
           type="text"
           name="topic"
           placeholder="Chat Topic"
         />
         <button onClick={createChatButt}>
-          <span id="isActiveForSetHiding">Create new chat</span>
+          <span name="create_chat_button" id="isActiveForSetHiding">
+            Create new chat
+          </span>
         </button>
       </div>
     </div>
   )
 }
 
-function CreateChatStuff({ setChats, chats }) {
+function CreateChatStuff() {
   const [hidden, setHiding] = useState(false)
   const handleClick = (e) => {
     e.preventDefault()
@@ -102,10 +104,10 @@ function CreateChatStuff({ setChats, chats }) {
     if (e.target.id === 'isActiveForSetHiding') hidden ? setHiding(false) : setHiding(true)
   }
   return (
-    <React.Fragment>
+    <>
       <PlusButton setHiding={handleClick} />
-      <CreateNewDialogForm isHide={hidden} setHiding={handleClick} setChats={setChats} chats={chats} />
-    </React.Fragment>
+      <CreateNewDialogForm isHide={hidden} setHiding={handleClick} />
+    </>
   )
 }
 

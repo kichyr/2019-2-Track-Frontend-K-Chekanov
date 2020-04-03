@@ -1,6 +1,6 @@
 export const PAPER_AIRPLANE = `
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 512 512" style="max-width: 100%; max-height: 100%;" style="enable-background:new 0 0 512 512;" xml:space="preserve" fill="blue">
+	 viewBox="0 0 512 512" style="max-height: 100%;" style="enable-background:new 0 0 512 512;" xml:space="preserve" fill="blue">
 <g>
 	<g>
 		<path d="M506.955,1.314c-3.119-1.78-6.955-1.75-10.045,0.078L313.656,109.756c-4.754,2.811-6.329,8.943-3.518,13.697
@@ -87,7 +87,7 @@ export const PAPER_AIRPLANE = `
 
 export const CLIP = `
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	position="relative" style="max-width: 100%; max-height: 100%;" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve" fill="blue">
+	position="relative" style="max-height: 100%;" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve" fill="blue">
 <g>
 	<path d="M97.344,482.17c-23.311,0-45.215-9.084-61.689-25.555c-34.01-34.014-34.01-89.361,0-123.371L305.343,63.543
 		c21.727-21.75,50.645-33.713,81.39-33.713c30.75,0,59.667,11.963,81.395,33.713c21.748,21.744,33.726,50.645,33.726,81.389
@@ -102,3 +102,45 @@ export const CLIP = `
 </g>
 </svg>
 `
+
+export const FILE_ICON = `
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 317.001 317.001" style="enable-background:new 0 0 317.001 317.001;" xml:space="preserve">
+<path d="M270.825,70.55L212.17,3.66C210.13,1.334,207.187,0,204.093,0H55.941C49.076,0,43.51,5.566,43.51,12.431V304.57
+	c0,6.866,5.566,12.431,12.431,12.431h205.118c6.866,0,12.432-5.566,12.432-12.432V77.633
+	C273.491,75.027,272.544,72.51,270.825,70.55z M55.941,305.073V12.432H199.94v63.601c0,3.431,2.78,6.216,6.216,6.216h54.903
+	l0.006,222.824H55.941z"/>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>`
