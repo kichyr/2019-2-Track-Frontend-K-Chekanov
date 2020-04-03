@@ -195,6 +195,7 @@ const InputPanel = connect(
     <div className={styles.input_panel}>
       <form className={styles.sendMessForm} onSubmit={sendMessageHandler}>
         <input
+          id="message_input"
           ref={textInput}
           type="text"
           className={styles.messageText}
@@ -253,6 +254,7 @@ const InputPanel = connect(
         </div>
 
         <label
+          id="send_message_button"
           style={{
             flex: '0.3',
             display: 'flex',
