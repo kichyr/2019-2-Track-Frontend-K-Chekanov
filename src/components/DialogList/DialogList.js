@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch, connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import TopLineDialogList from '../TopLineDialogList/TopLineDialogList'
 import styles from './DialogList.module.css'
 import CreateNewChat from '../CreateNewChat/CreateNewChat'
-import { openNewChat } from '../../actions/sendMessage'
 import { chatFetchData } from '../../actions/middleware'
 
 function getDialogsList() {
@@ -60,16 +59,11 @@ const ChatList = connect(
 })
 
 function DialogListContainer() {
-  const chats = useSelector((state) => state.chatList)
   return (
     <div className={styles.dialogsListContainer}>
       <ChatList />
     </div>
   )
-}
-
-function openChat(chatId, dispatch) {
-  dispatch(openNewChat(getChat(chatId)))
 }
 
 function DialogList() {

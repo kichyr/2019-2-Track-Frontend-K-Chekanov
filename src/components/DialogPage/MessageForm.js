@@ -18,12 +18,6 @@ import { messagePost } from '../../actions/middleware'
 	return [ messages[chatId].topic, messages[chatId].messages ];
 } */
 
-function postMessage(message) {
-  const data = JSON.parse(localStorage.getItem('messages'))
-  data[message.chatId].push(message)
-  localStorage.setItem('messages', JSON.stringify(data))
-}
-
 function TopLine({ topic, appState, setAppState }) {
   const history = useHistory()
   return (
