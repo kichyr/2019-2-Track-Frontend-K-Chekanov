@@ -1,6 +1,6 @@
 module.exports = {
   launch: {
-    headless: false, // для отображения в клиенте
+    args: ['--headless --disable-breakpad', '--window-size=1200,800', '--no-sandbox', '--disable-setuid-sandbox'],
   },
   server: {
     command: `npm start`,
