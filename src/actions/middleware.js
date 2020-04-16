@@ -2,10 +2,10 @@ import { sendNewMessage, openNewChat } from './sendMessage'
 
 export function chatFetchData(chatId) {
   return (dispatch) => {
-    //FIX: temporary mock
+    // FIX: temporary mock
     dispatch(
       openNewChat({
-        chatId: chatId,
+        chatId,
         topic: 'test',
         messages: [],
       }),
@@ -14,7 +14,7 @@ export function chatFetchData(chatId) {
 }
 
 export function messagePost(message) {
-  //FIX: mock
+  // FIX: mock
   return (dispatch) => {
     dispatch(sendNewMessage(message))
   }

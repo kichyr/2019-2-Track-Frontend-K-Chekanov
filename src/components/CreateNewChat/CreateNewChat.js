@@ -47,7 +47,7 @@ export function PlusButton({ setHiding }) {
 function CreateNewDialogForm({ isHide, setHiding }) {
   const dispatch = useDispatch()
   let topicForm = null
-  //creating new chat when click on button
+  // creating new chat when click on button
   const createChatButt = (e) => {
     e.preventDefault()
     dispatch(addNewChatToChatList(createNewChat(topicForm.value)))
