@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 describe('e2e tests', () => {
   beforeEach(async () => {
     await page.goto(
-      'localhost:3000',
+      'http://localhost:3000/',
       {
         waitUntil: 'networkidle0',
       },
@@ -18,6 +18,8 @@ describe('e2e tests', () => {
   it('should create new chat with proper name', async () => {
     const test_topic_name = 'test_topic'
     const test_message_text = 'Hi, it is just test message'
+    await page.waitFor(5000)
+    await page.screenshot({ path: 'example.png' })
     await page.waitFor(`[name=plus_butt]`)
     await page.click('[name=plus_butt]')
     await expect(page).toFill('input[id="topic_form"]', test_topic_name)
