@@ -52,7 +52,6 @@
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
     "prop-types": "^15.7.2",
-    "puppeteer": "^2.1.1",
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.6",
     "react-audio-recorder": "^2.2.0",
@@ -115,6 +114,7 @@
     "jest": "^24.9.0",
     "jest-cli": "^25.2.1",
     "jest-puppeteer": "^3.9.1",
+    "puppeteer": "^2.1.1",
     "jscpd": "^2.0.15",
     "jslint": "^0.12.1",
     "lodash": "^4.17.15",
@@ -144,7 +144,7 @@
     "not dead"
   ],
   "scripts": {
-    "test:endtoend": "jest -c /home/kichyr/TrackMail_2019_1/2019-2-Track-Frontend-K-Chekanov/endtoend/jest.conf.js",
+    "test:endtoend": "jest -c ./endtoend/jest.conf.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "node scripts/start.js",
@@ -159,7 +159,7 @@
     "lint:css": "stylelint 'src/**/*.{scss,css}' && stylelint --rd 'src/**/*.{scss,css}'",
     "lint:dup": "jscpd -g --threshold=1 tests docker",
     "clean": "rm -rf build",
-    "test": "node scripts/test.js",
+    "test": "react-scripts test & npm run test:endtoend",
     "test:engine": "check-engine",
     "test:sec": "npm audit || true",
     "test:unit": "node scripts/test.js",
