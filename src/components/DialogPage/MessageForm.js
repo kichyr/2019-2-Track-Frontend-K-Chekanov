@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, connect } from 'react-redux'
 import ReactAudioPlayer from 'react-audio-player'
 import PropTypes from 'prop-types'
 import { usePosition } from 'use-position'
@@ -11,18 +11,12 @@ import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
 import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
 import { openAudioMessagePage } from '../../actions/sendMessage'
-import { AudioMessageSender, sendFile, Message } from './utils'
-
+import { AudioMessageSender, generateFileMeassage, Message } from './utils'
+import { messagePost } from '../../actions/middleware'
 /* function getChatMessages(chatId) {
 	const messages = localStorage.getItem('messages');
 	return [ messages[chatId].topic, messages[chatId].messages ];
 } */
-
-function postMessage(message) {
-  const data = JSON.parse(localStorage.getItem('messages'))
-  data[message.chatId].push(message)
-  localStorage.setItem('messages', JSON.stringify(data))
-}
 
 function TopLine({ topic, appState, setAppState }) {
   const history = useHistory()
@@ -46,7 +40,19 @@ function TopLine({ topic, appState, setAppState }) {
   )
 }
 
-function MessagesContainer({ messages, appState, setAppState }) {
+// Connection to redux store
+const mapStateToProps = (state) => ({
+  openedChat: state.openedChat,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  sendMessage: (message) => dispatch(messagePost(message)),
+})
+
+const MessagesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(function({ openedChat, sendMessage }) {
   const [dragging, setDragging] = useState(false)
   const mContainer = React.createRef()
   const history = useHistory()
@@ -56,7 +62,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
     // eslint-disable-next-line
     mContainer.current.scrollTop = mContainer.current.scrollHeight
     // eslint-disable-next-line
-  }, [messages])
+  }, [openedChat.messages])
 
   // DRAGDandDROP
   const handleDragIn = (e) => {
@@ -78,15 +84,15 @@ function MessagesContainer({ messages, appState, setAppState }) {
     e.stopPropagation()
     if (e.dataTransfer.items[0].kind !== 'file') return
     const file = e.dataTransfer.items[0].getAsFile()
-    sendFile(file, appState, setAppState)
+    sendMessage(generateFileMeassage(openedChat.chatId, file))
   }
   // END DRAGDandDROP
   return (
     <div className={styles.result} style={{ scrollTop: 'scrollHeight' }} ref={mContainer} onDragEnter={handleDragIn}>
       <DragAndDropImg dragging={dragging} handleDragOut={handleDragOut} handleDrop={handleDrop} />
-      <AudioMessageSender appState={appState} setAppState={setAppState} />
+      <AudioMessageSender />
 
-      {messages.map((message, index) => (
+      {openedChat.messages.map((message, index) => (
         <div
           key={index.toString()}
           className={singleMessStyles.singleMessContainer}
@@ -98,7 +104,7 @@ function MessagesContainer({ messages, appState, setAppState }) {
             type="image"
             onClick={(e) => {
               // setAppState(Object.assign({}, appState, {appPage: 'ProfilePage', prevAppPage: 'Chat'}));
-              history.push(`${window.publicUrl}/profile`, appState)
+              history.push(`${window.publicUrl}/profile`)
             }}
             className={topLineStyles.chatImg}
             src="http://emilcarlsson.se/assets/rachelzane.png"
@@ -144,23 +150,22 @@ function MessagesContainer({ messages, appState, setAppState }) {
       ))}
     </div>
   )
-}
+})
 
-function InputPanel({ appState, setAppState }) {
+const InputPanel = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(function({ openedChat, sendMessage }) {
   const dispatch = useDispatch()
 
-  const sendMessage = (e) => {
+  const sendMessageHandler = (e) => {
     e.preventDefault()
     const messText = e.target[0].value
     if (messText.replace(/\s/gi, '') === '') {
       return
     }
-    const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, messText, 'text')
-    postMessage(newMess)
-    setAppState({
-      ...appState,
-      ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
-    })
+    const newMess = new Message(openedChat.chatId, WHOAMI.userId, messText, 'text')
+    sendMessage(newMess)
     e.target[0].value = ''
   }
 
@@ -171,23 +176,20 @@ function InputPanel({ appState, setAppState }) {
   const GeolocationHandler = (e) => {
     e.preventDefault()
     const newMess = new Message(
-      appState.openedChat.chatId,
+      openedChat.chatId,
       WHOAMI.userId,
       `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`,
       'link',
     )
-    postMessage(newMess)
-    setAppState({
-      ...appState,
-      ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
-    })
+    sendMessage(newMess)
     attachmentTypeDiv.current.style.transform = 'scale(0)'
   }
 
   return (
     <div className={styles.input_panel}>
-      <form className={styles.sendMessForm} onSubmit={sendMessage}>
+      <form className={styles.sendMessForm} onSubmit={sendMessageHandler}>
         <input
+          id="message_input"
           ref={textInput}
           type="text"
           className={styles.messageText}
@@ -208,7 +210,7 @@ function InputPanel({ appState, setAppState }) {
                 name="file"
                 onChange={(e) => {
                   attachmentTypeDiv.current.style.transform = 'scale(0)'
-                  sendFile(e.target.files[0], appState, setAppState)
+                  sendMessage(generateFileMeassage(openedChat.chatId, e.target.files[0]))
                 }}
                 onKeyDown={(e) => {}}
                 style={{ display: 'none' }}
@@ -246,6 +248,7 @@ function InputPanel({ appState, setAppState }) {
         </div>
 
         <label
+          id="send_message_button"
           style={{
             flex: '0.3',
             display: 'flex',
@@ -259,8 +262,7 @@ function InputPanel({ appState, setAppState }) {
       </form>
     </div>
   )
-}
-
+})
 function MessageForm({ appState, setAppState }) {
   return (
     <div className={styles.message_form}>

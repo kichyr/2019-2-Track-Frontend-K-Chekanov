@@ -17,3 +17,10 @@ export const openNewChat = (openingChat) => {
     openingChat: openingChat,
   }
 }
+
+export const sendNewMessage = (message) => {
+  return {
+    type: 'SEND_MESSAGE',
+    message: message,
+  }
+}

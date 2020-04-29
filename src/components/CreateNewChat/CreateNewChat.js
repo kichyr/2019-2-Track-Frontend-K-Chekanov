@@ -30,7 +30,14 @@ function createNewChat(Topic) {
 
 export function PlusButton({ setHiding }) {
   return (
-    <div role="button" id="isActiveForSetHiding" tabIndex={0} className={plusButtonStyles.plusbut} onClick={setHiding}>
+    <div
+      role="button"
+      id="isActiveForSetHiding"
+      tabIndex={0}
+      name="plus_butt"
+      className={plusButtonStyles.plusbut}
+      onClick={setHiding}
+    >
       <div className={plusButtonStyles.horizontal_plus} id="isActiveForSetHiding" />
       <div className={plusButtonStyles.vertical_plus} id="isActiveForSetHiding" />
     </div>
@@ -73,12 +80,15 @@ function CreateNewDialogForm({ isHide, setHiding }) {
           ref={(input) => {
             topicForm = input
           }}
+          id="topic_form"
           type="text"
           name="topic"
           placeholder="Chat Topic"
         />
         <button onClick={createChatButt}>
-          <span id="isActiveForSetHiding">Create new chat</span>
+          <span name="create_chat_button" id="isActiveForSetHiding">
+            Create new chat
+          </span>
         </button>
       </div>
     </div>

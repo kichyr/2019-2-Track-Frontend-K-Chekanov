@@ -41,16 +41,13 @@ export async function sendFile(file, appState, setAppState) {
   }
 }
 
-function generateFileMeassage(appState, setAppState, file) {
+export function generateFileMeassage(chatId, file) {
   let contentType
   if (file.type !== undefined && file.type.includes('image')) contentType = 'image'
   else contentType = 'file'
   const link = URL.createObjectURL(file)
-  const newMess = new Message(appState.openedChat.chatId, WHOAMI.userId, '', contentType, link, file.name)
-  setAppState({
-    ...appState,
-    ...Object.assign(appState.openedChat, { messages: [...appState.openedChat.messages, newMess] }),
-  })
+  const newMess = new Message(chatId, WHOAMI.userId, '', contentType, link, file.name)
+  return newMess
 }
 
 const CloseButt = styled.div`
