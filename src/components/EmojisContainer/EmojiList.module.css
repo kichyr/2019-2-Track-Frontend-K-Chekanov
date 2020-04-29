@@ -1,0 +1,42 @@
+.alian {
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Alien Emoji.png?sprite') no-repeat;
+  background-size: 30px;
+}
+
+.dark_blue_moon {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Dark Blue Moon Emoji.png?sprite') no-repeat;
+  background-size: 30px;
+}
+
+.nerd {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Nerd Emoji With Glasses.png?sprite') no-repeat;
+  background-size: 30px;
+}
+
+.poop {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Poop Emoji.png?sprite') no-repeat;
+  background-size: 30px;
+}
+
+.upside_down_face {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Upside-Down Face Emoji.png?sprite') no-repeat;
+  background-size: 30px;
+}
+
+.very_mad_emodji {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../assets/emojis/Very Mad Emoji.png?sprite') no-repeat;
+  background-size: 30px;
+}

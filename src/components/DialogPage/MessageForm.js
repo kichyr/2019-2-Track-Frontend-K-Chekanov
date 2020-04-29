@@ -9,10 +9,12 @@ import WHOAMI from '../whoami'
 import topLineStyles from './topLine.module.css'
 import styles from './styles.module.css'
 import BackArrow from '../BackArrow/BackArrow'
-import { PAPER_AIRPLANE, CLIP, FILE_ICON } from './svgVariables'
+import { PAPER_AIRPLANE, CLIP, FILE_ICON, EMOJI_ICON } from './svgVariables'
 import { openAudioMessagePage } from '../../actions/sendMessage'
 import { AudioMessageSender, generateFileMeassage, Message } from './utils'
 import { messagePost } from '../../actions/middleware'
+import EmojiContainer, { parseEmojis } from '../EmojisContainer/EmojisContainer'
+
 /* function getChatMessages(chatId) {
 	const messages = localStorage.getItem('messages');
 	return [ messages[chatId].topic, messages[chatId].messages ];
@@ -140,7 +142,12 @@ const MessagesContainer = connect(
                       </div>
                     )
                   default:
-                    return <div> {message.messageText} </div>
+                    return (
+                      <div
+                        style={{ display: 'flex' }}
+                        dangerouslySetInnerHTML={{ __html: parseEmojis(message.messageText) }}
+                      />
+                    )
                 }
               })()}
             </div>
@@ -171,6 +178,7 @@ const InputPanel = connect(
 
   const textInput = React.createRef()
   const attachmentTypeDiv = React.createRef()
+  const emojiDiv = React.createRef()
   const { latitude, longitude } = usePosition()
 
   const GeolocationHandler = (e) => {
@@ -196,6 +204,42 @@ const InputPanel = connect(
           maxLength="512"
           placeholder="Введите сообщеине"
         />
+        {/* emoji attachment */}
+        <label
+          id="emoji_button"
+          style={{
+            flex: '0.3',
+            display: 'flex',
+            maxHeight: '100%',
+          }}
+        >
+          <div ref={emojiDiv} className={styles.attachmentType}>
+            <EmojiContainer
+              callback={(emodjiCode) => {
+                textInput.current.value += `:${emodjiCode}:`
+              }}
+            />
+          </div>
+
+          <div
+            aria-label="emojis"
+            // eslint-disable-next-line
+            dangerouslySetInnerHTML={{ __html: EMOJI_ICON }}
+            style={{
+              height: '90%',
+              width: '90%',
+            }}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={() => {}}
+            onClick={(e) => {
+              emojiDiv.current.style.transform =
+                emojiDiv.current.style.transform !== 'scale(1)' ? 'scale(1)' : 'scale(0)'
+            }}
+          />
+        </label>
+
+        {/* file/audioMessage/location attachment */}
         <div
           style={{
             margin: '5px',
@@ -231,7 +275,7 @@ const InputPanel = connect(
             </div>
           </div>
           <div
-            aria-label="send message"
+            aria-label="attachment"
             // eslint-disable-next-line
             dangerouslySetInnerHTML={{ __html: CLIP }}
             style={{
@@ -247,6 +291,7 @@ const InputPanel = connect(
           />
         </div>
 
+        {/* send message button */}
         <label
           id="send_message_button"
           style={{
