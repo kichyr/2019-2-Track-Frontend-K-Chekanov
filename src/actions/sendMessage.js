@@ -7,20 +7,20 @@ export const openAudioMessagePage = () => {
 export const addNewChatToChatList = (newChat) => {
   return {
     type: 'ADD_NEW_CHAT_TO_CHAT_LIST',
-    newChat: newChat,
+    newChat,
   }
 }
 
 export const openNewChat = (openingChat) => {
   return {
     type: 'OPEN_CHAT',
-    openingChat: openingChat,
+    openingChat,
   }
 }
 
 export const sendNewMessage = (message) => {
   return {
     type: 'SEND_MESSAGE',
-    message: message,
+    message,
   }
 }

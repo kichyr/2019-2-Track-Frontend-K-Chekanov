@@ -1,5 +1,5 @@
 import React from 'react'
-import RussiaMap from './map/RussiaMap'
+import RussiaMap from './map/WorldCovidMap'
 import * as DataDef from './map/utils'
 import './App.css'
 

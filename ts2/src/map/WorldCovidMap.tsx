@@ -2,6 +2,11 @@ import React, { useEffect } from 'react'
 import * as DataDef from './utils'
 import * as d3 from 'd3'
 
+function isCountriesEqueal(name: string, country: DataDef.ICOVDCountryInfo) {
+  if (name === 'USA') name = 'United States of America'
+  return country.Country.toLowerCase() === name.toLowerCase() || country.Slug.toLowerCase() === name.toLowerCase()
+}
+
 // Resolves color by country name
 async function getColorFunction(): Promise<(name: string) => string> {
   const covidSummary: DataDef.ICOVIDStatistic = await DataDef.getCOVIDStatistic()
@@ -15,11 +20,7 @@ async function getColorFunction(): Promise<(name: string) => string> {
 
   return (name: string): string => {
     for (const country of covidSummary.Countries) {
-      if (name === 'USA') name = 'United States of America'
-      if (country.Country.toLowerCase() === name.toLowerCase() || country.Slug.toLowerCase() === name.toLowerCase()) {
-        console.log(country.TotalConfirmed)
-        console.log(maxConfirmed)
-        console.log(`rgb(${Math.floor((255 * country.TotalConfirmed) / maxConfirmed)}, 0, 0)`)
+      if (isCountriesEqueal(name, country)) {
         return `rgb(${Math.floor(255 * Math.pow(country.TotalConfirmed / maxConfirmed, 1 / 5))}, 0, 0)`
       }
     }
@@ -41,7 +42,6 @@ async function generatePath(
     .append('path')
     .attr('d', path)
     .style('fill', (d: any) => {
-      console.log(`${colorResolver(d.properties.name)}`)
       return `${colorResolver(d.properties.name)}`
     })
   /*.on("mouseover",function(d) {
