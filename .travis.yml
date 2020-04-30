@@ -21,3 +21,4 @@ deploy:
       - devel
       - hw5
       - hw7
+      - hw7_2sem
