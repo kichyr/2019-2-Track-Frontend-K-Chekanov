@@ -5,14 +5,15 @@ cache:
   directories:
     - node_modules
 script:
-  - npm run test
+  - cd ts2
+  - npm install
   - npm run build
 
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $repo_token
-  local_dir: build
+  local_dir: ts2/build
   on:
     branch:
       - master
@@ -20,3 +21,4 @@ deploy:
       - devel
       - hw5
       - hw7
+      - hw7_2sem
