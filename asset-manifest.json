@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.f62804d4.chunk.css",
-    "main.js": "/static/js/main.74bad268.chunk.js",
-    "main.js.map": "/static/js/main.74bad268.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.8058a0c3.js",
-    "runtime-main.js.map": "/static/js/runtime-main.8058a0c3.js.map",
-    "static/js/2.17d85c8d.chunk.js": "/static/js/2.17d85c8d.chunk.js",
-    "static/js/2.17d85c8d.chunk.js.map": "/static/js/2.17d85c8d.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.bdda56d335772965cc535e6382103102.js": "/precache-manifest.bdda56d335772965cc535e6382103102.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.f62804d4.chunk.css.map": "/static/css/main.f62804d4.chunk.css.map",
-    "static/js/2.17d85c8d.chunk.js.LICENSE.txt": "/static/js/2.17d85c8d.chunk.js.LICENSE.txt"
+    "main.css": "/2019-2-Track-Frontend-K-Chekanov/static/css/main.a719e54b.chunk.css",
+    "main.js": "/2019-2-Track-Frontend-K-Chekanov/static/js/main.536c6b0f.chunk.js",
+    "main.js.map": "/2019-2-Track-Frontend-K-Chekanov/static/js/main.536c6b0f.chunk.js.map",
+    "runtime-main.js": "/2019-2-Track-Frontend-K-Chekanov/static/js/runtime-main.2459e61c.js",
+    "runtime-main.js.map": "/2019-2-Track-Frontend-K-Chekanov/static/js/runtime-main.2459e61c.js.map",
+    "static/js/2.00a52b1f.chunk.js": "/2019-2-Track-Frontend-K-Chekanov/static/js/2.00a52b1f.chunk.js",
+    "static/js/2.00a52b1f.chunk.js.map": "/2019-2-Track-Frontend-K-Chekanov/static/js/2.00a52b1f.chunk.js.map",
+    "index.html": "/2019-2-Track-Frontend-K-Chekanov/index.html",
+    "precache-manifest.7fddaccd693c30c8b8409ecd0e09c876.js": "/2019-2-Track-Frontend-K-Chekanov/precache-manifest.7fddaccd693c30c8b8409ecd0e09c876.js",
+    "service-worker.js": "/2019-2-Track-Frontend-K-Chekanov/service-worker.js",
+    "static/css/main.a719e54b.chunk.css.map": "/2019-2-Track-Frontend-K-Chekanov/static/css/main.a719e54b.chunk.css.map",
+    "static/js/2.00a52b1f.chunk.js.LICENSE.txt": "/2019-2-Track-Frontend-K-Chekanov/static/js/2.00a52b1f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.8058a0c3.js",
-    "static/js/2.17d85c8d.chunk.js",
-    "static/css/main.f62804d4.chunk.css",
-    "static/js/main.74bad268.chunk.js"
+    "static/js/runtime-main.2459e61c.js",
+    "static/js/2.00a52b1f.chunk.js",
+    "static/css/main.a719e54b.chunk.css",
+    "static/js/main.536c6b0f.chunk.js"
   ]
 }
