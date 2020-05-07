@@ -5,9 +5,10 @@ cache:
   directories:
     - node_modules
 script:
-  - cd ts2
+  - cd exam_2
   - npm install
   - npm run build
+  - тзь к
 
 deploy:
   provider: pages

@@ -1,0 +1,27 @@
+.TranslaterHolder {
+    display: flex;
+    height: 20%;
+    justify-content: center;
+}
+
+.Input {
+    flex:1;
+    margin: 10px;
+    width: 90%;
+    height: 90%;
+}
+
+.Output {
+    flex:1;
+    margin:10px;
+    width: 90%;
+    height: 90%;
+}
+
+.InputHolder {
+    flex: 1;
+}
+
+.OutputHolder {
+    flex: 1;
+}
