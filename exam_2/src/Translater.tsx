@@ -76,7 +76,7 @@ async function TranslateText(
     ) {
     TranslateUtils.translate(
         text as string,
-        state.trSource == "" ? state.trDest : state.trSource + '-' + state.trDest,
+        state.trSource === "" ? state.trDest : state.trSource + '-' + state.trDest,
         ).then(
         (translated)=>{
             let newState: ITranslateState = Object.assign({}, state);
@@ -101,7 +101,7 @@ const Translater: React.FC = () => {
     useEffect(() => {
     }, [])
     function updateTransText() {
-        if(inputForm.current?.value != state.input) {
+        if(inputForm.current?.value !== state.input) {
             let newState: ITranslateState = Object.assign({}, state);
             newState.input = inputForm.current?.value
             setState(newState)

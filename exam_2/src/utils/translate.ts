@@ -52,10 +52,6 @@ async function getLangList(api_url: string, ui: string): Promise<T.LangListAPIRe
 }
 
 export async function getSupportedLangList(ui: string): Promise<T.LangListAPIResponse> {
-  let error: T.IAPIResponseError = {
-    code: 401,
-    message: 'Network problem',
-  }
 
   if (langLst[ui]) {
     return langLst[ui] as T.ILangListAPIResponse
