@@ -4,12 +4,12 @@ const fetch = require('node-fetch')
 
 let cache: T.Cache = {}
 const langLst: T.Cache = {}
-const API = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
+const API = 'https://translate.yandex.net/api/v1.5/tr.json'
 const API_KEY = 'trnsl.1.1.20200419T183046Z.854d48023a74da23.b94456cd112cae9a9311e51a5d6f83f7c0b72961'
 
 
 function generate_url(text: string, api_key: string, lang: string): URL {
-  var url = new URL(API)
+  var url = new URL(API+'/translate')
   url.searchParams.append('key', api_key)
   url.searchParams.append('lang', lang)
   url.searchParams.append('text', text)
@@ -40,7 +40,7 @@ export function translate(
 }
 
 async function getLangList(api_url: string, ui: string): Promise<T.LangListAPIResponse> {
-  return fetch(api_url, { method: 'POST' })
+  return (fetch(api_url)
     .then((response: any) => response.json())
     .then((data: T.ILangListAPIResponse) => {
       langLst[ui] = data
@@ -48,7 +48,7 @@ async function getLangList(api_url: string, ui: string): Promise<T.LangListAPIRe
     })
     .catch((err: T.IAPIResponseError) => {
       return err
-    })
+    }));
 }
 
 export async function getSupportedLangList(ui: string): Promise<T.LangListAPIResponse> {
